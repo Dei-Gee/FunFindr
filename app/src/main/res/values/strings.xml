@@ -3,6 +3,8 @@
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_firstname">Firstname</string>
+    <string name="prompt_lastname">Lastname</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
@@ -12,7 +14,9 @@
     <string name="blurb">...a world of excitement...</string>
     <string name="description_logo">This is the text logo</string>
     <string name="buttonLogin">Login</string>
+    <string name="buttonRegister">Register</string>
     <string name="questionHaveAccount">No account yet?</string>
     <string name="signup">Signup</string>
     <string name="signup_now">Signup Now</string>
+    <string name="buttonUploadImage">Upload Profile Image</string>
 </resources>
