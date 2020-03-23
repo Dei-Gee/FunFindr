@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="colorFunFindrBlue">#0071BC</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorTransparent">#00FFFFFF</color>
 </resources>
