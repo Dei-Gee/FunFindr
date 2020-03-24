@@ -27,6 +27,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Search String Values -->
+    <string name="search_favorites">Search favorites...</string>
+    <string name="search_events">Search events...</string>
+
+    <!-- Menu String Values -->
     <string name="menu_home">Home</string>
     <string name="menu_favorites">Favorites</string>
     <string name="menu_events">Events</string>

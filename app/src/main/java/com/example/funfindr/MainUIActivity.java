@@ -2,6 +2,9 @@ package com.example.funfindr;
 
 import android.os.Bundle;
 
+import com.example.funfindr.fragments.FavoritesFragment;
+import com.example.funfindr.fragments.GoogleMapFragment;
+import com.example.funfindr.fragments.EventsFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -18,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 
@@ -45,6 +49,12 @@ public class MainUIActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // default fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+
+
     }
 
     @Override
@@ -82,13 +92,16 @@ public class MainUIActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
         } else if (id == R.id.nav_favorites) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new FavoritesFragment()).commit();
         } else if (id == R.id.nav_events) {
 
         } else if (id == R.id.nav_information) {
