@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
+import com.example.funfindr.utilites.FragmentHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
@@ -38,8 +40,10 @@ public class MainUIActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                FragmentManager frag = getSupportFragmentManager(); // initializes new Support Fragment Manager
+                FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
+                fragHandler.getCurrentFragment(); // gets the current fragment active in the container
+                fragHandler.floatingActionButtonHandler(view, EventsFragment.class); // determines what this floating action button will do
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
