@@ -103,7 +103,7 @@ public class MainUIActivity extends AppCompatActivity
         } else if (id == R.id.nav_favorites) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FavoritesFragment()).commit();
         } else if (id == R.id.nav_events) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
         } else if (id == R.id.nav_information) {
 
         } else if (id == R.id.nav_settings) {

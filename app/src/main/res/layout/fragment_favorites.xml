@@ -5,60 +5,84 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayoutTopContainer"
         android:layout_width="match_parent"
-        android:layout_height="97dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/background_splash_screen">
+        android:layout_height="wrap_content">
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="308dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@drawable/rounded_corners"
-            android:gravity="right"
-            android:layoutDirection="rtl"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:autofillHints="@string/search_favorites"
-            android:queryHint="@string/search_favorites" />
-
-        <TextView
-            android:id="@+id/textViewFavoritesHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/menu_favorites"
-            android:textColor="@color/colorWhite"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutTopContainer"
+            android:layout_width="match_parent"
+            android:layout_height="89dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/background_splash_screen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
-            app:layout_constraintVertical_bias="0.111" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="308dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:autofillHints="@string/search_favorites"
+                android:background="@drawable/rounded_corners"
+                android:gravity="right"
+                android:layoutDirection="rtl"
+                android:queryHint="@string/search_favorites"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.494"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewFavoritesHeading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/menu_favorites"
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchView"
+                app:layout_constraintVertical_bias="0.111" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="507dp"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutTopContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="499dp"
+                android:orientation="vertical"
+                android:scrollbars="vertical"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <include layout="@layout/cards_layout_favorites" />
+
+                <include layout="@layout/cards_layout_favorites" />
+
+                <include layout="@layout/cards_layout_favorites" />
+
+                <include layout="@layout/cards_layout_favorites" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="501dp"
-        android:layout_gravity="bottom"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent">
-
-    </RelativeLayout>
 
 
 </FrameLayout>
