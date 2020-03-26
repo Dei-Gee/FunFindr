@@ -19,4 +19,44 @@
     <string name="signup">Signup</string>
     <string name="signup_now">Signup Now</string>
     <string name="buttonUploadImage">Upload Profile Image</string>
+    <string name="title_activity_main_ui">MainUIActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Search String Values -->
+    <string name="search_favorites">Search favorites...</string>
+    <string name="search_events">Search events...</string>
+
+    <!-- Menu String Values -->
+    <string name="menu_home">Home</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_events">Events</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_information">Information</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string name="menu_title_tools">Tools</string>
+    <string name="menu_title_communicate">Communicate</string>
+    <string name="menu_title_account">Account</string>
+
+    <!-- Favorties Favorites Card View -->
+    <string name="text_place_name">Sample Place Name</string>
+    <string name="text_place_address">1000 Sample Ave, Vancouver BC V5C 1A1</string>
+    <string name="type_place">Place Type</string>
+    <string name="buttonShowOnMap">Show on map</string>
+
+    <!-- Favorties Events Card View -->
+    <string name="text_event_name">Sample Event Name</string>
+    <string name="text_event_time">8:30 PM (20-Mar-2020)</string>
+    <string name="type_event">Event Type</string>
+    <string name="text_event_location">Location</string>
 </resources>
