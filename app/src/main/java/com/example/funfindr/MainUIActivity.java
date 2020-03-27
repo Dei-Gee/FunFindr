@@ -1,7 +1,9 @@
 package com.example.funfindr;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
@@ -9,6 +11,7 @@ import com.example.funfindr.utilites.FragmentHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -36,14 +39,32 @@ public class MainUIActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_ui);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab); // floating action button
+
+        // Fragment Handler
+        FragmentManager frag = getSupportFragmentManager(); // initializes new Support Fragment Manager
+        final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
+
+
+        // default fragment
+        fragHandler.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager frag = getSupportFragmentManager(); // initializes new Support Fragment Manager
-                FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
                 fragHandler.getCurrentFragment(); // gets the current fragment active in the container
-                fragHandler.floatingActionButtonHandler(view, EventsFragment.class); // determines what this floating action button will do
+
+                // determines what this floating action button will do
+                if(fragHandler.getCurrentFragment() instanceof EventsFragment)
+                {
+                    fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
+                }
+                else if(fragHandler.getCurrentFragment() instanceof FavoritesFragment) {
+
+                }
+
+
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -54,9 +75,6 @@ public class MainUIActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // default fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
 
 
     }
@@ -98,16 +116,18 @@ public class MainUIActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentHandler f = new FragmentHandler(fragmentManager);
+        FloatingActionButton fb = findViewById(R.id.fab);
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+            f.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_favorites) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FavoritesFragment()).commit();
+            f.loadFragment(new FavoritesFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_events) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
+            f.loadFragment(new EventsFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_information) {
 
         } else if (id == R.id.nav_settings) {
@@ -120,4 +140,5 @@ public class MainUIActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

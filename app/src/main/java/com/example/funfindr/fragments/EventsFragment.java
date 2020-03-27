@@ -19,8 +19,6 @@ public class EventsFragment extends Fragment {
     public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_events, container, false);
 
-
-
     }
 
 }
