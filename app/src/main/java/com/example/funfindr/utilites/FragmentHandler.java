@@ -60,7 +60,12 @@ public class FragmentHandler {
      */
     public void loadFragment(Fragment fragment, Context context, FloatingActionButton fbtn) {
         setFloatingActionButtonDrawable(fbtn, fragment, context);
-        this.fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        if(this.getCurrentFragment() == null){
+            this.fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
+        else{
+            this.fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).addToBackStack("tag").commit();
+        }
     }
 
 

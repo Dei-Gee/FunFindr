@@ -82,9 +82,13 @@ public class MainUIActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        Fragment curr = getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } if(curr != null && curr.getChildFragmentManager().getBackStackEntryCount() > 0) {
+            curr.getChildFragmentManager().popBackStack();
+        }
+        else {
             super.onBackPressed();
         }
     }
