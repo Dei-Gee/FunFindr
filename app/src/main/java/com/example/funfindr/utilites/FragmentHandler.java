@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.funfindr.R;
+import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.EventsFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
@@ -88,7 +89,7 @@ public class FragmentHandler {
             Drawable drawable = ctx.getResources().getDrawable(R.drawable.ic_add_blue_24dp);
             f.setImageDrawable(drawable);
         }
-        else {
+        else if(EventsFormFragment.class.isInstance(currFrag)) {
             f.setVisibility(View.INVISIBLE);
         }
 
@@ -104,7 +105,7 @@ public class FragmentHandler {
 
         if(fragClass.isInstance(this.currentFragment))
         {
-            this.fragmentManager.beginTransaction().replace(R.id.content_frame, newFrag).commit();;
+            this.fragmentManager.beginTransaction().replace(R.id.content_frame, newFrag).addToBackStack("tag").commit();;
         }
 
     }

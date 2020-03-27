@@ -59,4 +59,19 @@
     <string name="text_event_time">8:30 PM (20-Mar-2020)</string>
     <string name="type_event">Event Type</string>
     <string name="text_event_location">Location</string>
+    <string name="enter_event_name">Name of event</string>
+    <string name="select_event_type">Type of event</string>
+
+    <!-- Events Types Array -->
+    <string-array name="event_types">
+        <item>Birthday</item>
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Date</item>
+        <item>Dinner</item>
+        <item>Hangout</item>
+        <item>Lunch</item>
+        <item>Party</item>
+        <item>Workout</item>
+    </string-array>
 </resources>
