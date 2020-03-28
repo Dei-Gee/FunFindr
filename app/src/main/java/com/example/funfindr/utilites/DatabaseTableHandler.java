@@ -113,13 +113,13 @@ public class DatabaseTableHandler {
      * Updates data in the table
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
-     * @param table This is the table where the record will be deleted
+     * @param tableName This is the name of the table where the record will be deleted
      * @param column This is the column that will be the key for the where clause
      * @param data This is the data that will be determine what row(s) will be deleted
      * @return returns whether the data was successfully deleted or not
      */
-    public static boolean delete(SQLiteDatabase db, String table, String column, String data) {
-        int delete = db.delete(table,column+"=?", data.split(""));
+    public static boolean delete(SQLiteDatabase db, String tableName, String column, String data) {
+        int delete = db.delete(tableName,column+"=?", data.split(""));
 
         if(delete == 0) {
             return false;
@@ -133,7 +133,7 @@ public class DatabaseTableHandler {
      * Updates data in the table
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
-     * @param table This is the table where the record will be deleted
+     * @param tableName This is the name of the table where the record will be deleted
      * @param columns These are the columns that will be returned
      * @param selection This arraylist contains the column and corresponding data that will be the
      *                  filter to determine which rows will be returned. It is the equivalent of an
@@ -151,14 +151,14 @@ public class DatabaseTableHandler {
      * @param unique Boolean parameter that determines whether or not to return unique rows
      * @return returns whether the data was successfully deleted or not
      */
-    public static ArrayList<Map<String,String>> select(SQLiteDatabase db, boolean unique, String table, String[] columns,
+    public static ArrayList<Map<String,String>> select(SQLiteDatabase db, boolean unique, String tableName, String[] columns,
                                                              HashMap<String, String> selection, ArrayList<String> optionalParameters)
     {
         Map<String,String> row = null;
         Set<Map<String, String>> rows = null;
         ArrayList<Map<String,String>> results = null;
 
-        Cursor cursor = db.query(table, columns, selection.keySet().toArray()[0].toString(),
+        Cursor cursor = db.query(tableName, columns, selection.keySet().toArray()[0].toString(),
                 selection.get("s").toString().split(""), optionalParameters.get(0),
                 optionalParameters.get(1), optionalParameters.get(2), optionalParameters.get(3));
 
