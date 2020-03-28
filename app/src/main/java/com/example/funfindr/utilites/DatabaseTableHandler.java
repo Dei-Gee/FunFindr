@@ -4,6 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.funfindr.utilites.db_models.FunFindrDatabaseTable;
+import com.example.funfindr.utilites.db_models.FunFindrDatabaseTableColumn;
+import com.google.android.gms.common.util.NumberUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,37 +20,28 @@ public class DatabaseTableHandler {
     /**
      * Creates tables
      * @param database The database that will contain the table
-     * @param tableName The name of the table to be created
-     * @param tableColumns The columns that the table will have
+     * @param table The table that will be created
      */
-    public static void createTable(SQLiteDatabase database, String tableName, String tableColumns)
+    public static void createTable(SQLiteDatabase database, FunFindrDatabaseTable table)
     {
-        String primaryKey = "id INTEGER PRIMARY KEY AUTOINCREMENT";
-        String query = "";
-
-        query = "CREATE TABLE "+ tableName + " (" + primaryKey + tableColumns + ")";
-        database.execSQL(query);
+        database.execSQL(table.generateSQLCreateQuery());
     }
 
 
     /**
      * Creates tables
      * @param database The database that contains the table
-     * @param tableName The name of the table to be altered
-     * @param foreignKey The foreign key to be added to the table. This is the column that will
-     *                   become the foreign key and reference another column in another table
-     * @param referencedTable The table that contains the column that the foreign key references
-     * @param referencedColumn The column that is referenced by the foreign key
+     * @param table The table that the foreign key will be added to
+     * @param foreignKey The foreign key to be added to the table
+     * @param referencedTable The table the foreign key will reference
+     * @param referencedColumn The column that the foreign key will reference
      */
-    public static void addForeignKeyConstraints(SQLiteDatabase database, String tableName,
-                                                String foreignKey, String referencedTable,
-                                                String referencedColumn)
+    public static void addForeignKeyConstraints(SQLiteDatabase database, FunFindrDatabaseTable table,
+                                                String foreignKey,
+                                                FunFindrDatabaseTable referencedTable,
+                                                FunFindrDatabaseTableColumn referencedColumn)
     {
-        String query = "";
-
-        query = "ALTER TABLE "+ tableName + " ADD FOREIGN KEY(" + foreignKey + ") REFERENCES " +
-                referencedTable + "(" + referencedColumn + ")";
-        database.execSQL(query);
+        database.execSQL(table.generateSQLAddForeignKeyQuery(foreignKey, referencedTable, referencedColumn));
     }
 
     /**
@@ -63,13 +58,25 @@ public class DatabaseTableHandler {
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
      * @param table This is the table that the data will be inserted into
-     * @param column This is the column that will receive the data
      * @param data This is the data that will be inserted
      * @return returns whether the data was successfully inserted or not
      */
-    public static boolean insert(SQLiteDatabase db, String table, String column, String data) {
+    public static boolean insert(SQLiteDatabase db, String table, HashMap<String,String> data) {
         ContentValues values = new ContentValues();
-        values.put(column, data);
+
+        // Iterates through tthe hashmap and adds each entry to the set of values
+        for(HashMap.Entry<String,String> entry : data.entrySet())
+        {
+            if(FunFindrUtils.isInteger(entry.getValue()))
+            {
+                values.put(entry.getKey(), Integer.parseInt(entry.getValue()));
+            }
+            else
+            {
+                values.put(entry.getKey(), entry.getValue());
+            }
+        }
+
         Long insertion = db.insert(table,null, values);
 
         if(insertion == null) {
@@ -84,15 +91,15 @@ public class DatabaseTableHandler {
      * Updates data in the table
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
-     * @param table This is the table that will be updated
+     * @param tableName This is the name of the table that will be updated
      * @param column This is the column that will receive the data
      * @param data This is the data that will be inserted
      * @return returns whether the data was successfully updated or not
      */
-    public static boolean update(SQLiteDatabase db, String table, String column, String data) {
+    public static boolean update(SQLiteDatabase db, String tableName, String column, String data) {
         ContentValues values = new ContentValues();
         values.put(column, data);
-        int update = db.update(table, values, column+"=?", data.split(""));
+        int update = db.update(tableName, values, column+"=?", data.split(""));
 
         if(update == 0) {
             return false;
