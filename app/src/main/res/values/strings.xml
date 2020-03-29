@@ -48,15 +48,40 @@
     <string name="menu_title_communicate">Communicate</string>
     <string name="menu_title_account">Account</string>
 
-    <!-- Favorties Favorites Card View -->
+    <!-- Favorties Card View -->
     <string name="text_place_name">Sample Place Name</string>
     <string name="text_place_address">1000 Sample Ave, Vancouver BC V5C 1A1</string>
     <string name="type_place">Place Type</string>
     <string name="buttonShowOnMap">Show on map</string>
 
-    <!-- Favorties Events Card View -->
+    <!-- Events Card View -->
     <string name="text_event_name">Sample Event Name</string>
     <string name="text_event_time">8:30 PM (20-Mar-2020)</string>
     <string name="type_event">Event Type</string>
     <string name="text_event_location">Location</string>
+
+    <!-- Events Types Array -->
+    <string-array name="event_types">
+        <item>Birthday</item>
+        <item>Breakfast</item>
+        <item>Brunch</item>
+        <item>Date</item>
+        <item>Dinner</item>
+        <item>Hangout</item>
+        <item>Lunch</item>
+        <item>Party</item>
+        <item>Workout</item>
+    </string-array>
+
+    <!-- Events Form -->
+    <string name="enter_event_name">Name of event</string>
+    <string name="select_event_type">Type of event</string>
+    <string name="enter_event_location">Location of event</string>
+    <string name="enter_event_address">Venue Address</string>
+    <string name="enter_event_notes">Notes...</string>
+    <string name="enter_event_date">Date and Time</string>
+    <string name="events_form_title">Create a new Event</string>
+
+    <!-- Buttons -->
+    <string name="buttonSubmit">Submit</string>
 </resources>
