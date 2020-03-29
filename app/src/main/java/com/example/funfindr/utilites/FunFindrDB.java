@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.funfindr.utilites.db_models.FunFindrDatabaseTable;
 
 public class FunFindrDB extends SQLiteOpenHelper {
-    // VARIABLES
+    // FINAL GLOBAL VARIABLES
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "funfindr_database";
     private static final FunFindrDatabaseTable TABLE1 = new FunFindrDatabaseTable("users");
     private static final FunFindrDatabaseTable TABLE2 = new FunFindrDatabaseTable("favorites");
@@ -15,7 +16,7 @@ public class FunFindrDB extends SQLiteOpenHelper {
 
     // Compuslory Constructor
     public FunFindrDB(Context context){
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
@@ -38,13 +39,13 @@ public class FunFindrDB extends SQLiteOpenHelper {
         TABLE1.addColumn("firstname", "VARCHAR", false, false);
         TABLE1.addColumn("lastname", "VARCHAR", false, false);
         TABLE1.addColumn("email", "VARCHAR", false, false);
-        TABLE1.addColumn("profile_pic", "VARBINARY(MAX)", false, false);
+        TABLE1.addColumn("profile_pic", "BLOB", false, false);
 
         /* Favorites Table */
         TABLE2.addColumn("_id", "INTEGER", true, true);
         TABLE2.addColumn("user_id", "INTEGER", false, false);
         TABLE2.addColumn("name", "VARCHAR", false, false);
-        TABLE2.addColumn("logo", "VARBINARY(MAX)", false, false);
+        TABLE2.addColumn("logo", "BLOB", false, false);
         TABLE2.addColumn("type", "VARCHAR", false, false);
 
         /* Events Table */

@@ -62,4 +62,6 @@ public class User {
     public void setProfileImage(Bitmap profileImage) {
         this.profileImage = profileImage;
     }
+
+
 }

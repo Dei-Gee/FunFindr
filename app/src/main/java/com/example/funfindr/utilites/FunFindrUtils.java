@@ -1,5 +1,10 @@
 package com.example.funfindr.utilites;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
+
 public class FunFindrUtils {
 
     /**
@@ -28,4 +33,40 @@ public class FunFindrUtils {
         }
         return true;
     }
+
+    /**
+     * Converts a Bitmap image to a byte array
+     * @param bitmap The bitmap image
+     * @param originalFormat the original format of the bitmap image
+     * @return returns a byte array of the bitmap image
+     */
+    public static byte[] bitmapToByteArray(Bitmap bitmap, String originalFormat)
+    {
+        byte[] byteArray = null;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if(originalFormat.toLowerCase() == "png")
+        {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        }
+        else if(originalFormat.toLowerCase() == "jpg" || originalFormat.toLowerCase()== "jpeg")
+        {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        }
+        else if(originalFormat.toLowerCase() == "webp" || originalFormat.toLowerCase()== "jpeg")
+        {
+            bitmap.compress(Bitmap.CompressFormat.WEBP, 0, stream);
+        }
+        byteArray = stream.toByteArray();
+        return byteArray;
+    }
+
+    /**
+     * Converts a byte arrayto a Bitmap image
+     * @param byteArray The byte imag to be converted
+     * @return returns a Bitmap image from the byte array
+     */
+    public static Bitmap getImage(byte[] byteArray) {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+    }
+
 }

@@ -57,11 +57,11 @@ public class DatabaseTableHandler {
      * Inserts data into the table
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
-     * @param table This is the table that the data will be inserted into
+     * @param tableName This is the name of the table that the data will be inserted into
      * @param data This is the data that will be inserted
      * @return returns whether the data was successfully inserted or not
      */
-    public static boolean insert(SQLiteDatabase db, String table, HashMap<String,String> data) {
+    public static boolean insert(SQLiteDatabase db, String tableName, HashMap<String,String> data) {
         ContentValues values = new ContentValues();
 
         // Iterates through tthe hashmap and adds each entry to the set of values
@@ -77,7 +77,7 @@ public class DatabaseTableHandler {
             }
         }
 
-        Long insertion = db.insert(table,null, values);
+        Long insertion = db.insert(tableName,null, values);
 
         if(insertion == null) {
             return false;
