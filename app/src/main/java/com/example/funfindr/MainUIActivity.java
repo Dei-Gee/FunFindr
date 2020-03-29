@@ -75,8 +75,6 @@ public class MainUIActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
     }
 
     @Override
@@ -86,7 +84,7 @@ public class MainUIActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } if(curr != null && curr.getChildFragmentManager().getBackStackEntryCount() > 0) {
-            curr.getChildFragmentManager().popBackStack();
+            curr.getChildFragmentManager().popBackStackImmediate();
         }
         else {
             super.onBackPressed();

@@ -4,8 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorFunFindrBlue</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorWhite</item>
+        <item name="colorPrimaryDark">@color/colorFunFindrBlueDark</item>
+        <item name="colorAccent">@color/colorFunFindrBlueLight</item>
     </style>
 
     <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
