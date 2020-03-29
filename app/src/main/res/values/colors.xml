@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorFunFindrBlue">#0071BC</color>
+    <color name="colorFunFindrBlueLight">#0088e3</color>
+    <color name="colorFunFindrBlueDark">#003152</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorTransparent">#00FFFFFF</color>

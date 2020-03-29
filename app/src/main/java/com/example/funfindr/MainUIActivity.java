@@ -1,13 +1,17 @@
 package com.example.funfindr;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
+import com.example.funfindr.utilites.FragmentHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -21,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
@@ -34,12 +39,32 @@ public class MainUIActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_ui);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        final FloatingActionButton fab = findViewById(R.id.fab); // floating action button
+
+        // Fragment Handler
+        FragmentManager frag = getSupportFragmentManager(); // initializes new Support Fragment Manager
+        final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
+
+
+        // default fragment
+        fragHandler.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                fragHandler.getCurrentFragment(); // gets the current fragment active in the container
+
+                // determines what this floating action button will do
+                if(fragHandler.getCurrentFragment() instanceof EventsFragment)
+                {
+                    fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
+                }
+                else if(fragHandler.getCurrentFragment() instanceof FavoritesFragment) {
+
+                }
+
+
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -50,19 +75,18 @@ public class MainUIActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        // default fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
-
-
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        Fragment curr = getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } if(curr != null && curr.getChildFragmentManager().getBackStackEntryCount() > 0) {
+            curr.getChildFragmentManager().popBackStackImmediate();
+        }
+        else {
             super.onBackPressed();
         }
     }
@@ -94,16 +118,18 @@ public class MainUIActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentHandler f = new FragmentHandler(fragmentManager);
+        FloatingActionButton fb = findViewById(R.id.fab);
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new GoogleMapFragment()).commit();
+            f.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_favorites) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FavoritesFragment()).commit();
+            f.loadFragment(new FavoritesFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_events) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new EventsFragment()).commit();
+            f.loadFragment(new EventsFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_information) {
 
         } else if (id == R.id.nav_settings) {
@@ -116,4 +142,5 @@ public class MainUIActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
