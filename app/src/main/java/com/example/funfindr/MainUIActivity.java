@@ -1,5 +1,7 @@
 package com.example.funfindr;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -8,9 +10,11 @@ import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
 import com.example.funfindr.utilites.FragmentHandler;
+import com.example.funfindr.utilites.SharePreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
@@ -29,10 +33,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
+import android.widget.TextView;
 
 public class MainUIActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +50,13 @@ public class MainUIActivity extends AppCompatActivity
         final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
 
 
-        // default fragment
+        // load default fragment
         fragHandler.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fab);
 
+        // SHARED PREFERENCES
+        SharedPreferences sharedPreferences = SharePreferencesManager.newPreferences("MyPrefs", this);
 
+        // FLOATING ACTION BUTTON CLICK LISTENER
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +76,33 @@ public class MainUIActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // NAVIGATION HEADER
+        View headerView = navigationView.getHeaderView(0);
+        TextView loggedInName = (TextView) headerView.findViewById(R.id.textViewUserFullNameLoggedIn);
+        TextView loggedInEmail = (TextView) headerView.findViewById(R.id.textViewUserEmailLoggedIn);
+
+
+        /* Checking if SharedPreferences Values exist before they are used */
+        if(sharedPreferences.contains("email"))
+        {
+            String email = SharePreferencesManager.getString(sharedPreferences, "email");
+
+            if(!email.isEmpty())
+            {
+                loggedInEmail.setText(email);
+            }
+        }
+        if(sharedPreferences.contains("password"))
+        {
+            String firstname = SharePreferencesManager.getString(sharedPreferences, "firstname");
+            String lastname = SharePreferencesManager.getString(sharedPreferences, "lastname");
+
+            if(!firstname.isEmpty() && !lastname.isEmpty())
+            {
+                loggedInName.setText(firstname + " "+ lastname);
+            }
+        }
 
     }
 

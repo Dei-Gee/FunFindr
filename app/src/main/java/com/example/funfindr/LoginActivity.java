@@ -11,8 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.funfindr.utilites.DatabaseHandler;
+import com.example.funfindr.utilites.SharePreferencesManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,10 @@ public class LoginActivity extends AppCompatActivity {
 
     /* GLOBALS */
     public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String FIRSTNAME = "firstname";
+    public static final String LASTNAME = "lastname";
+    public static final String EMAIL = "email";
+    public static final String PASSWORD = "password";
     // SESSION MANAGEMENT
     SharedPreferences sharedPreferences;
 
@@ -40,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         String[] formLoginDetails = new String[2];
 
         DatabaseHandler.getWritable(this);
-        sharedPreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = SharePreferencesManager.newPreferences(MyPREFERENCES, this);
 
         goToSignupActivity(textViewSignup);
 
@@ -53,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences.Editor editor = sharedPreferences.edit();
                 ArrayList<Map<String,String>> userData;
                 String[] formLoginDetails = new String[2];
 
@@ -72,12 +77,28 @@ public class LoginActivity extends AppCompatActivity {
                 if(userData != null)
                 {
                     Log.d("USER DATA", userData.toString());
-//                    editor.putString("firstname", userData)
+                    Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+
+                    /* Passing User Data into the SharedPrefences to manage the session */
+                    ArrayList<String> data = new ArrayList<String>();
+
+                    // add userData to data array list
+                    for(Map.Entry<String,String> entry : userData.get(0).entrySet())
+                    {
+                        data.add(entry.getValue());
+                    }
+
+                    SharePreferencesManager.editPreferences(LoginActivity.this, "String", sharedPreferences, data);
+
                     startActivity(new Intent(LoginActivity.this, MainUIActivity.class));
                 }
                 else
                 {
+                    if(!DatabaseHandler.checkIfUserExists(formLoginDetails[0], formLoginDetails[1]))
+                    {
 
+                        Toast.makeText(LoginActivity.this, "Sorry! You don't have an account", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }

@@ -72,8 +72,11 @@ public class DatabaseHandler {
         HashMap<String,String> map = new HashMap<String,String>();
         map.put("email", loginDetails[0]);
         map.put("password", loginDetails[1]);
+
         ArrayList<Map<String,String>> userData = null;
-        if(!checkIfUserExists(map.get("email"), map.get("password")))
+
+        // if user exists get the user data
+        if(checkIfUserExists(map.get("email"), map.get("password")))
         {
             userData = DatabaseTableHandler.select(sqldb, true, "users", returnColumns, map, null);
         }
