@@ -63,14 +63,28 @@ public class SignupActivity extends AppCompatActivity {
 //                newUser.setProfileImage();
                 String[] userLoginDetails;
                 Intent newIntent;
+
+                // Login Details
+                userLoginDetails = new String[2];
+                userLoginDetails[0] = newUser.getEmail();
+                userLoginDetails[1] = newUser.getPassword();
+
                 if(DatabaseHandler.SignupUser(newUser))
                 {
-                    userLoginDetails = new String[2];
                     Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
-                    userLoginDetails[0] = newUser.getEmail();
-                    userLoginDetails[1] = newUser.getPassword();
                     newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
                     startActivity(newIntent);
+                }
+                else
+                {
+                    if(DatabaseHandler.checkIfUserExists(userLoginDetails[0], userLoginDetails[1]) == true)
+                    {
+                        Toast.makeText(SignupActivity.this, "Email/Password already taken", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(SignupActivity.this, "Error! Signup failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }

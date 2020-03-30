@@ -233,8 +233,6 @@ public class DatabaseTableHandler {
                 cursor.moveToNext(); // move to next item in the cursor
             }
 
-
-
         }
         catch (Exception e)
         {
