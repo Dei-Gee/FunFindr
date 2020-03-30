@@ -2,7 +2,6 @@ package com.example.funfindr;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,10 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.SharePreferencesManager;
+import com.example.funfindr.utilites.SharedPreferencesManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 
@@ -36,6 +34,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sharedPreferences = SharedPreferencesManager.newPreferences(MyPREFERENCES, this);
+
+        // CHECK IF USER IS LOGGED IN
+        if(sharedPreferences.getBoolean("userLoggedIn", false))
+        {
+            SharedPreferencesManager.checkIfUserLoggedIn(sharedPreferences, LoginActivity.this);
+            finish();
+        }
 
         EditText userEmail = (EditText) findViewById(R.id.editTextEmailLogin);
         EditText userPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
@@ -46,12 +52,38 @@ public class LoginActivity extends AppCompatActivity {
         String[] formLoginDetails = new String[2];
 
         DatabaseHandler.getWritable(this);
-        sharedPreferences = SharePreferencesManager.newPreferences(MyPREFERENCES, this);
 
         goToSignupActivity(textViewSignup);
 
         goToMainUIActivity(buttonLogin, intentLoginDetails, userEmail, userPassword);
 
+    }
+
+    @Override
+    protected void onResume() {
+        sharedPreferences = SharedPreferencesManager.newPreferences(MyPREFERENCES, this);
+
+        // CHECK IF USER IS LOGGED IN
+        if(sharedPreferences.getBoolean("userLoggedIn", false))
+        {
+            SharedPreferencesManager.checkIfUserLoggedIn(sharedPreferences, LoginActivity.this);
+            finish();
+        }
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        sharedPreferences = SharedPreferencesManager.newPreferences(MyPREFERENCES, this);
+
+        // CHECK IF USER IS LOGGED IN
+        if(sharedPreferences.getBoolean("userLoggedIn", false))
+        {
+            SharedPreferencesManager.checkIfUserLoggedIn(sharedPreferences, LoginActivity.this);
+            finish();
+        }
+        super.onRestart();
     }
 
     private void goToMainUIActivity(Button button, final String[] iLDetails, final EditText useremail, final EditText userpassword)
@@ -88,15 +120,16 @@ public class LoginActivity extends AppCompatActivity {
                         data.add(entry.getValue());
                     }
 
-                    SharePreferencesManager.editPreferences(LoginActivity.this, "String", sharedPreferences, data);
-
+                    SharedPreferencesManager.editPreferences(LoginActivity.this, "String", sharedPreferences, data);
+                    SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", true);
                     startActivity(new Intent(LoginActivity.this, MainUIActivity.class));
+                    finish();
                 }
                 else
                 {
                     if(!DatabaseHandler.checkIfUserExists(formLoginDetails[0], formLoginDetails[1]))
                     {
-
+                        SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", false);
                         Toast.makeText(LoginActivity.this, "Sorry! You don't have an account", Toast.LENGTH_SHORT).show();
                     }
                 }

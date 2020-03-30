@@ -1,12 +1,17 @@
 package com.example.funfindr.utilites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.example.funfindr.LoginActivity;
+import com.example.funfindr.MainUIActivity;
 
 import java.util.ArrayList;
 
-public class SharePreferencesManager {
+public class SharedPreferencesManager {
     private static final String DEFAULT_MESSAGE = "Value not found";
 
     /**
@@ -54,6 +59,21 @@ public class SharePreferencesManager {
     }
 
     /**
+     * Edits the values in the shared preferences
+     * @param context The context of the Activity or Fragment calling this method
+     * @param prefs The SharedPreferences Object
+     * @param key The key of the new entry
+     * @param value The value of the new entry
+     */
+    public static void editPreferencesBoolean(Context context, SharedPreferences prefs, String key, boolean value)
+    {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(key,value);
+        editor.commit();
+
+    }
+
+    /**
      * Checks if the SharedPreferences Object contains the value based on the key passed
      * @param prefs The SharedPreferences Object
      * @param key The key used to search
@@ -67,12 +87,30 @@ public class SharePreferencesManager {
 
     /**
      * Returns a string value of the SharedPreferences data based on a its key
-     * @param prefs The SharedPreferencs Object
+     * @param prefs The SharedPreferences Object
      * @param key The key used to find the data
      * @return returns the value of the key passed
      */
     public static String getString (SharedPreferences prefs, String key)
     {
         return prefs.getString(key, DEFAULT_MESSAGE);
+    }
+
+    /**
+     * Checks if the user is still logged in
+     * @param prefs The SharedPreferences Objec
+     * @param context The context of the Activity or Fragment calling this method
+     */
+    public static void checkIfUserLoggedIn(SharedPreferences prefs, Context context)
+    {
+        if(prefs != null && prefs.contains("userLoggedIn"))
+        {
+            if(prefs.getBoolean("userLoggedIn", false))
+            {
+                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
+                context.startActivity(new Intent(context, MainUIActivity.class));
+            }
+        }
     }
 }

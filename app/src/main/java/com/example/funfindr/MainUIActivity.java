@@ -1,21 +1,17 @@
 package com.example.funfindr;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
+import com.example.funfindr.utilites.DatabaseHandler;
 import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharePreferencesManager;
+import com.example.funfindr.utilites.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -54,7 +50,7 @@ public class MainUIActivity extends AppCompatActivity
         fragHandler.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fab);
 
         // SHARED PREFERENCES
-        SharedPreferences sharedPreferences = SharePreferencesManager.newPreferences("MyPrefs", this);
+        SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", this);
 
         // FLOATING ACTION BUTTON CLICK LISTENER
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +82,7 @@ public class MainUIActivity extends AppCompatActivity
         /* Checking if SharedPreferences Values exist before they are used */
         if(sharedPreferences.contains("email"))
         {
-            String email = SharePreferencesManager.getString(sharedPreferences, "email");
+            String email = SharedPreferencesManager.getString(sharedPreferences, "email");
 
             if(!email.isEmpty())
             {
@@ -95,8 +91,8 @@ public class MainUIActivity extends AppCompatActivity
         }
         if(sharedPreferences.contains("password"))
         {
-            String firstname = SharePreferencesManager.getString(sharedPreferences, "firstname");
-            String lastname = SharePreferencesManager.getString(sharedPreferences, "lastname");
+            String firstname = SharedPreferencesManager.getString(sharedPreferences, "firstname");
+            String lastname = SharedPreferencesManager.getString(sharedPreferences, "lastname");
 
             if(!firstname.isEmpty() && !lastname.isEmpty())
             {
@@ -164,7 +160,9 @@ public class MainUIActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-
+            SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
+            DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

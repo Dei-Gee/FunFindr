@@ -1,9 +1,12 @@
 package com.example.funfindr.utilites;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.funfindr.LoginActivity;
 import com.example.funfindr.data.User;
 
 import java.util.ArrayList;
@@ -82,6 +85,24 @@ public class DatabaseHandler {
         }
 
         return userData;
+    }
+
+    /**
+     * Logs out the user by destroying the shared preferences
+     * @param prefs The SharedPreferences Object
+     */
+    public static void LogoutUser(SharedPreferences prefs, Context context)
+    {
+        prefs.edit().clear();
+        SharedPreferencesManager.editPreferencesBoolean(context, prefs, "userLoggedIn", false);
+
+
+        Log.d("BOOLEAN => ", String.valueOf(prefs.getBoolean("blah", false)));
+
+        if(!prefs.getBoolean("userLoggedIn", false))
+        {
+            context.startActivity(new Intent(context, LoginActivity.class));
+        }
     }
 
     /**
