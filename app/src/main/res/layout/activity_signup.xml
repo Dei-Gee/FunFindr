@@ -66,7 +66,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewBlurb">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imageViewProfilePicture"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_alignParentStart="true"
@@ -128,7 +128,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextFirstName" />
 
             <EditText
-                android:id="@+id/editTextEmail"
+                android:id="@+id/editTextEmailSignup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -149,7 +149,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
 
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editTextPasswordSignup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -167,7 +167,7 @@
                 app:backgroundTint="@color/colorFunFindrBlue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+                app:layout_constraintTop_toBottomOf="@+id/editTextEmailSignup" />
 
             <Button
                 android:id="@+id/buttonUploadImage"
@@ -185,13 +185,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
+                app:layout_constraintTop_toBottomOf="@+id/editTextPasswordSignup"
                 app:layout_constraintVertical_bias="0.0"
                 android:drawableLeft="@drawable/ic_file_upload_black_24dp"
                 android:drawablePadding="8dp"/>
 
             <Button
-                android:id="@+id/buttonLogin"
+                android:id="@+id/buttonSignup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

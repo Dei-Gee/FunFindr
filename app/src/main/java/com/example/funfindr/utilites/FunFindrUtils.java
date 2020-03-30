@@ -2,6 +2,8 @@ package com.example.funfindr.utilites;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
@@ -68,5 +70,6 @@ public class FunFindrUtils {
     public static Bitmap getImage(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
+
 
 }

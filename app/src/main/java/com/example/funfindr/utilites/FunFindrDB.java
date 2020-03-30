@@ -35,36 +35,34 @@ public class FunFindrDB extends SQLiteOpenHelper {
         // Adding Columns to the tables
 
         /* Users Table */
-        TABLE1.addColumn("_id", "INTEGER", true, true);
-        TABLE1.addColumn("firstname", "VARCHAR", false, false);
-        TABLE1.addColumn("lastname", "VARCHAR", false, false);
-        TABLE1.addColumn("email", "VARCHAR", false, false);
-        TABLE1.addColumn("profile_pic", "BLOB", false, false);
+        TABLE1.addColumn("_id", "INTEGER", true, true, true);
+        TABLE1.addColumn("firstname", "VARCHAR", false, false, true);
+        TABLE1.addColumn("lastname", "VARCHAR", false, false, true);
+        TABLE1.addColumn("email", "VARCHAR", false, false, true);
+        TABLE1.addColumn("password", "VARCHAR", false, false, true);
+        TABLE1.addColumn("profile_pic", "BLOB", false, false, false);
 
         /* Favorites Table */
-        TABLE2.addColumn("_id", "INTEGER", true, true);
-        TABLE2.addColumn("user_id", "INTEGER", false, false);
-        TABLE2.addColumn("name", "VARCHAR", false, false);
-        TABLE2.addColumn("logo", "BLOB", false, false);
-        TABLE2.addColumn("type", "VARCHAR", false, false);
+        TABLE2.addColumn("_id", "INTEGER", true, true, true);
+        TABLE2.addColumn("user_id", "INTEGER", false, false, true);
+        TABLE2.addColumn("name", "VARCHAR", false, false, true);
+        TABLE2.addColumn("logo", "BLOB", false, false, true);
+        TABLE2.addColumn("type", "VARCHAR", false, false, false);
 
         /* Events Table */
-        TABLE3.addColumn("_id", "INTEGER", true, true);
-        TABLE3.addColumn("user_id", "INTEGER", false, false);
-        TABLE3.addColumn("location", "VARCHAR", false, false);
-        TABLE3.addColumn("address", "VARCHAR", false, false);
-        TABLE3.addColumn("type", "VARCHAR", false, false);
-        TABLE3.addColumn("notes", "TEXT", false, false);
-        TABLE3.addColumn("date", "DATETIME", false, false);
+        TABLE3.addColumn("_id", "INTEGER", true, true, true);
+        TABLE3.addColumn("user_id", "INTEGER", false, false, true);
+        TABLE3.addColumn("location", "VARCHAR", false, false, true);
+        TABLE3.addColumn("address", "VARCHAR", false, false, true);
+        TABLE3.addColumn("type", "VARCHAR", false, false, true);
+        TABLE3.addColumn("notes", "TEXT", false, false, false);
+        TABLE3.addColumn("date", "DATETIME", false, false, true);
 
         // Create Tables
         DatabaseTableHandler.createTable(db, TABLE1);
-        DatabaseTableHandler.createTable(db, TABLE2);
-        DatabaseTableHandler.createTable(db, TABLE3);
+        DatabaseTableHandler.createTable(db, TABLE2,"user_id", TABLE1, TABLE1.getCOLUMN("_id"));
+        DatabaseTableHandler.createTable(db, TABLE3,"user_id", TABLE1, TABLE1.getCOLUMN("_id"));
 
-        // Add Foreign Key Constraints
-        DatabaseTableHandler.addForeignKeyConstraints(db, TABLE2, "user_id", TABLE1, TABLE1.getCOLUMN("_id"));
-        DatabaseTableHandler.addForeignKeyConstraints(db, TABLE3, "user_id", TABLE1, TABLE1.getCOLUMN("_id"));
 
     }
 

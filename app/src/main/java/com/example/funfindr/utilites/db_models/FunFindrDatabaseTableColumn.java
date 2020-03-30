@@ -5,8 +5,9 @@ public class FunFindrDatabaseTableColumn {
     private String DATATYPE = "";
     private boolean AUTO_INCREMENT = false;
     private boolean PRIMARY_KEY = false;
+    private boolean NOT_NULL = false;
 
-    public FunFindrDatabaseTableColumn(String title, String datatype, boolean auto_increment, boolean primary_key)
+    public FunFindrDatabaseTableColumn(String title, String datatype, boolean auto_increment, boolean primary_key, boolean not_null)
     {
         this.AUTO_INCREMENT = auto_increment;
         this.DATATYPE = datatype.toUpperCase();
@@ -18,18 +19,24 @@ public class FunFindrDatabaseTableColumn {
     {
         String autoIncrement = "";
         String primaryKey = "";
+        String notNull = "";
 
         if(this.PRIMARY_KEY == true)
         {
-            primaryKey = "PRIMARY KEY";
+            primaryKey = " PRIMARY KEY";
         }
 
         if(this.AUTO_INCREMENT ==  true)
         {
-            autoIncrement = "AUTO INCREMENT";
+            autoIncrement = " AUTOINCREMENT";
         }
 
-        return this.TITLE + " " + this.DATATYPE + " " + primaryKey + " " + autoIncrement;
+        if(this.NOT_NULL ==  true)
+        {
+            notNull = " NOT NULL";
+        }
+
+        return this.TITLE + " " + this.DATATYPE + primaryKey + notNull + autoIncrement;
 
     }
 

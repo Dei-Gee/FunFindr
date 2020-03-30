@@ -28,11 +28,32 @@ public class FunFindrDatabaseTable {
      * @param datatype The datatype of the column
      * @param autoIncrement Is the column automatically incrementable?
      * @param isPrimaryKey Is the column a primary key?
+     * @param notNull Is this column nullable?
      */
-    public void addColumn(String title, String datatype, boolean autoIncrement, boolean isPrimaryKey)
+    public void addColumn(String title, String datatype, boolean autoIncrement, boolean isPrimaryKey, boolean notNull)
     {
-        FunFindrDatabaseTableColumn newColumn = new FunFindrDatabaseTableColumn(title, datatype, autoIncrement, isPrimaryKey);
+        FunFindrDatabaseTableColumn newColumn = new FunFindrDatabaseTableColumn(title, datatype, autoIncrement, isPrimaryKey, notNull);
         COLUMNS.put(newColumn.getTITLE(), newColumn);
+    }
+
+    /**
+     * Generates a raw SQL CREATE TABLE query
+     * @return returns a raw sql query for creating a table
+     */
+    public String generateSQLCreateQuery(String foreignKey, FunFindrDatabaseTable referencedTable,
+                                         FunFindrDatabaseTableColumn referencedColumn)
+    {
+        StringBuilder sb = new StringBuilder();
+        String columns = "";
+
+        for(String key : this.COLUMNS.keySet())
+        {
+            sb.append(this.COLUMNS.get(key).generateSQLCreateQuery()).append(", ");
+        }
+        columns = sb.substring(0, sb.length()-2);
+
+        return "CREATE TABLE " + this.NAME + " (" + columns +
+                this.generateSQLAddForeignKeyQuery(foreignKey, referencedTable, referencedColumn)+")";
     }
 
     /**
@@ -46,24 +67,24 @@ public class FunFindrDatabaseTable {
 
         for(String key : this.COLUMNS.keySet())
         {
-            sb.append(this.COLUMNS.get(key).generateSQLCreateQuery()).append(",");
+            sb.append(this.COLUMNS.get(key).generateSQLCreateQuery()).append(", ");
         }
-        columns = sb.substring(0, sb.length()-1);
+        columns = sb.substring(0, sb.length()-2);
 
-        return "CREATE TABLE " + this.NAME + " (" + columns + ")";
+        return "CREATE TABLE " + this.NAME + " (" + columns +")";
     }
 
     /**
      * Generates a raw SQL ADD FOREIGN KEY query
      * @return returns a raw sql query for adding a foreign key constraint to a table
      */
-    public String generateSQLAddForeignKeyQuery(String foreignKey, FunFindrDatabaseTable referencedTable,
+    private String generateSQLAddForeignKeyQuery(String foreignKey, FunFindrDatabaseTable referencedTable,
                                                 FunFindrDatabaseTableColumn referencedColumn)
     {
         String query = "";
         if(this.COLUMNS.containsKey(foreignKey) && referencedTable.COLUMNS.containsKey(referencedColumn))
         {
-            query = "ALTER TABLE " + this.NAME + " ADD FOREIGN KEY(" + foreignKey + ") REFERENCES " +
+            query = " FOREIGN KEY(" + foreignKey + ") REFERENCES " +
                     referencedTable.NAME + "(" + referencedColumn.getTITLE() + ")";
         }
 

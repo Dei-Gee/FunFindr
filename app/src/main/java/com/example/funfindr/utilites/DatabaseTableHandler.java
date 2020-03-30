@@ -3,12 +3,14 @@ package com.example.funfindr.utilites;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.funfindr.utilites.db_models.FunFindrDatabaseTable;
 import com.example.funfindr.utilites.db_models.FunFindrDatabaseTableColumn;
 import com.google.android.gms.common.util.NumberUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,28 +23,27 @@ public class DatabaseTableHandler {
      * Creates tables
      * @param database The database that will contain the table
      * @param table The table that will be created
+     * @param foreignKey The foreign key to be added to the table
+     * @param referencedTable The table the foreign key will reference
+     * @param referencedColumn The column that the foreign key will reference
+     */
+    public static void createTable(SQLiteDatabase database, FunFindrDatabaseTable table, String foreignKey,
+                                   FunFindrDatabaseTable referencedTable,
+                                   FunFindrDatabaseTableColumn referencedColumn)
+    {
+        database.execSQL(table.generateSQLCreateQuery(foreignKey, referencedTable, referencedColumn));
+    }
+
+    /**
+     * Creates tables
+     * @param database The database that will contain the table
+     * @param table The table that will be created
      */
     public static void createTable(SQLiteDatabase database, FunFindrDatabaseTable table)
     {
         database.execSQL(table.generateSQLCreateQuery());
     }
 
-
-    /**
-     * Creates tables
-     * @param database The database that contains the table
-     * @param table The table that the foreign key will be added to
-     * @param foreignKey The foreign key to be added to the table
-     * @param referencedTable The table the foreign key will reference
-     * @param referencedColumn The column that the foreign key will reference
-     */
-    public static void addForeignKeyConstraints(SQLiteDatabase database, FunFindrDatabaseTable table,
-                                                String foreignKey,
-                                                FunFindrDatabaseTable referencedTable,
-                                                FunFindrDatabaseTableColumn referencedColumn)
-    {
-        database.execSQL(table.generateSQLAddForeignKeyQuery(foreignKey, referencedTable, referencedColumn));
-    }
 
     /**
      * Drops tables if they exist in the database
@@ -67,13 +68,12 @@ public class DatabaseTableHandler {
         // Iterates through tthe hashmap and adds each entry to the set of values
         for(HashMap.Entry<String,String> entry : data.entrySet())
         {
-            if(FunFindrUtils.isInteger(entry.getValue()))
-            {
-                values.put(entry.getKey(), Integer.parseInt(entry.getValue()));
-            }
-            else
-            {
-                values.put(entry.getKey(), entry.getValue());
+            if(entry.getValue() != null) {
+                if (FunFindrUtils.isInteger(entry.getValue())) {
+                    values.put(entry.getKey(), Integer.parseInt(entry.getValue()));
+                } else {
+                    values.put(entry.getKey(), entry.getValue());
+                }
             }
         }
 
@@ -154,38 +154,98 @@ public class DatabaseTableHandler {
     public static ArrayList<Map<String,String>> select(SQLiteDatabase db, boolean unique, String tableName, String[] columns,
                                                              HashMap<String, String> selection, ArrayList<String> optionalParameters)
     {
-        Map<String,String> row = null;
+        Map<String,String> row;
         Set<Map<String, String>> rows = null;
-        ArrayList<Map<String,String>> results = null;
+        ArrayList<Map<String,String>> results = new ArrayList<Map<String,String>>();
+        Cursor cursor = null;
+        ArrayList<String> options = new ArrayList<>();
+        options.add("");
+        options.add("");
+        options.add("");
+        options.add("");
 
-        Cursor cursor = db.query(tableName, columns, selection.keySet().toArray()[0].toString(),
-                selection.get("s").toString().split(""), optionalParameters.get(0),
-                optionalParameters.get(1), optionalParameters.get(2), optionalParameters.get(3));
-
-        // move to first result
-        cursor.moveToFirst();
-
-        while(!cursor.isAfterLast()) // as long as we are not at the end of the cursor
+        // checking for optional parameters
+        if(optionalParameters != null)
         {
-            row = new HashMap<String,String>(); // each row is a hash map containing the values of the columns specified
-            if(columns.length == 1) // if there is more than one column to return
+            int i = 0;
+            for(String optParameter : optionalParameters)
             {
-                for(String column : columns)
+                if(optParameter != null || optParameter != "" || !optParameter.isEmpty())
                 {
-                    row.put(column, cursor.getString(cursor.getColumnIndex(column)));
+                   options.set(i, optParameter);
                 }
             }
-            else {
-                row.put(columns[0], cursor.getString(cursor.getColumnIndex(columns[0])));
-            }
-            rows.add(row); // add the row to the set of rows
-            cursor.moveToNext(); // move to next item in the cursor
         }
 
-        cursor.close(); // close the cursor
+        try{;
+            if(selection.size() > 1)
+            {
+                StringBuilder sb = new StringBuilder();
+                String selectionString = "";
+                String[] selectionArgs = new String[selection.size()];
+                String column = "";
+                for(int i = 0; i < selection.size(); i++)
+                {
+                    column = selection.keySet().toArray()[i].toString();
+                    selectionArgs[i] = selection.get(column);
+                    if(i != selection.size() - 1)
+                    {
+                        sb.append(column + " IN (?) AND ");
+                    }
+                    else
+                    {
+                        sb.append(column + " IN (?)");
+                    }
+                }
 
-        // create a new array list from the set of rows
-        results = new ArrayList<Map<String,String>>(rows);
+                selectionString = sb.toString();
+                Log.d("selection string => ", selectionString);
+                Log.d("selection args => ", Arrays.toString(selectionArgs));
+                cursor = db.query(tableName, columns, selectionString, selectionArgs, options.get(0),
+                        options.get(1), options.get(2), options.get(3));
+            }
+            else
+            {
+                String key = selection.keySet().toArray()[0].toString();
+                cursor = db.query(tableName, columns, key+" IN (?)",
+                        selection.get(key).toString().split(""), options.get(0),
+                        options.get(1), options.get(2), options.get(3));
+            }
+
+
+            // move to first result
+            cursor.moveToFirst();
+
+            while(!cursor.isAfterLast()) // as long as we are not at the end of the cursor
+            {
+                row = new HashMap<String,String>(); // each row is a hash map containing the values of the columns specified
+                if(columns.length > 1) // if there is more than one column to return
+                {
+                    for(String column : columns)
+                    {
+                        row.put(column, cursor.getString(cursor.getColumnIndex(column)));
+                    }
+                }
+                else {
+                    row.put(columns[0], cursor.getString(cursor.getColumnIndex(columns[0])));
+                }
+                results.add(row); // add the row to the array list of rows
+                cursor.moveToNext(); // move to next item in the cursor
+            }
+
+
+
+        }
+        catch (Exception e)
+        {
+            Log.d("EXCEPTION => ", e.getMessage());
+        }
+        finally {
+            if(cursor != null)
+            {
+                cursor.close(); // close the cursor
+            }
+        }
 
         return results;
 
