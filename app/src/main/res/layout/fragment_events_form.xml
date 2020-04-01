@@ -108,7 +108,6 @@
             android:layout_height="40dp"
             android:layout_marginTop="32dp"
             android:layout_marginBottom="32dp"
-            android:entries="@array/event_types"
             android:prompt="@string/select_event_type"
             android:spinnerMode="dialog"
             app:layout_constraintEnd_toEndOf="parent"

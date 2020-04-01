@@ -45,6 +45,12 @@ public class EventsEditFormFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String[] eventTypes = getResources().getStringArray(R.array.event_types);
+        ArrayAdapter<String> customAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, eventTypes);
+
+        Spinner eventType = getActivity().findViewById(R.id.spinnerEventTypeEdit);
+
+        eventType.setAdapter(customAdapter);
 
         // GET SHARED PREFERENCES
         final SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getActivity());
@@ -74,7 +80,6 @@ public class EventsEditFormFragment extends Fragment {
         final EditText eventAddress = getActivity().findViewById(R.id.editTextEventAddressEdit);
         final EditText eventLocation = getActivity().findViewById(R.id.editTextEventLocationEdit);
         final EditText eventNotes = getActivity().findViewById(R.id.editTextEventNotesEdit);
-        Spinner eventType = getActivity().findViewById(R.id.spinnerEventTypeEdit);
 
         // date to milliseconds
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

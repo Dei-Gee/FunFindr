@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -39,6 +40,14 @@ public class EventsFormFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // CUSTOM ADAPTER
+        String[] eventTypes = getResources().getStringArray(R.array.event_types);
+        ArrayAdapter<String> customAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, eventTypes);
+
+        Spinner eventType = getActivity().findViewById(R.id.spinnerEventType);
+
+        eventType.setAdapter(customAdapter);
+
 
         final SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getActivity());
 
@@ -52,7 +61,6 @@ public class EventsFormFragment extends Fragment {
         final EditText eventAddress = getActivity().findViewById(R.id.editTextEventAddress);
         final EditText eventLocation = getActivity().findViewById(R.id.editTextEventLocation);
         final EditText eventNotes = getActivity().findViewById(R.id.editTextEventNotes);
-        Spinner eventType = getActivity().findViewById(R.id.spinnerEventType);
 
         final String eTimeHour = String.valueOf(eventTime.getCurrentHour());
         final String eTimeMinute = String.valueOf(eventTime.getCurrentMinute());
@@ -60,6 +68,8 @@ public class EventsFormFragment extends Fragment {
 
         final ArrayList<String> dateOfEvent =  getDateOfEvent(eventDate);
         final ArrayList<String> typeOfEvent =  getTypeOfEvent(eventType);
+
+
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
