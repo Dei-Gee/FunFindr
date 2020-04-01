@@ -13,11 +13,13 @@
         <activity
             android:name=".MainUIActivity"
             android:label="@string/title_activity_main_ui"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SignupActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".SignupActivity" android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,7 +28,8 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/GOOGLE_API_KEY" />
     </application>
 
