@@ -92,14 +92,22 @@ public class DatabaseTableHandler {
      * @param db This is the writable database that contains the table that the data will be
      *           inserted into
      * @param tableName This is the name of the table that will be updated
-     * @param column This is the column that will receive the data
-     * @param data This is the data that will be inserted
+     * @param column This is the column that will be the filter
+     * @param data This is the data that will be matched against the filter
+     * @param entries The values to be put in the table
      * @return returns whether the data was successfully updated or not
      */
-    public static boolean update(SQLiteDatabase db, String tableName, String column, String data) {
+    public static boolean update(SQLiteDatabase db, String tableName, String column, String data, HashMap<String,String> entries) {
         ContentValues values = new ContentValues();
-        values.put(column, data);
-        int update = db.update(tableName, values, column+"=?", data.split(""));
+
+        for(Map.Entry<String,String> entry : entries.entrySet())
+        {
+            values.put(entry.getKey(), entry.getValue());
+        }
+
+        String[] whereArgs = new String[1];
+        whereArgs[0] = data;
+        int update = db.update(tableName, values, column+"=?", whereArgs);
 
         if(update == 0) {
             return false;
@@ -119,7 +127,11 @@ public class DatabaseTableHandler {
      * @return returns whether the data was successfully deleted or not
      */
     public static boolean delete(SQLiteDatabase db, String tableName, String column, String data) {
-        int delete = db.delete(tableName,column+"=?", data.split(""));
+        int delete = 0;
+        String[] whereArgs = new String[1];
+        whereArgs[0] = data;
+
+        delete = db.delete(tableName,column+"=?", whereArgs);
 
         if(delete == 0) {
             return false;
@@ -152,7 +164,7 @@ public class DatabaseTableHandler {
      * @return returns whether the data was successfully deleted or not
      */
     public static ArrayList<Map<String,String>> select(SQLiteDatabase db, boolean unique, String tableName, String[] columns,
-                                                             HashMap<String, String> selection, ArrayList<String> optionalParameters)
+                                                        HashMap<String, String> selection, ArrayList<String> optionalParameters)
     {
         Map<String,String> row;
         Set<Map<String, String>> rows = null;
@@ -164,6 +176,8 @@ public class DatabaseTableHandler {
         options.add("");
         options.add("");
 
+        String filterString;
+
         // checking for optional parameters
         if(optionalParameters != null)
         {
@@ -174,41 +188,46 @@ public class DatabaseTableHandler {
                 {
                    options.set(i, optParameter);
                 }
+                i++;
             }
         }
 
-        try{;
-            if(selection.size() > 1)
+        try{
+            Set<String> columnKeys;
+            String[] columnsArray;
+            columnKeys = selection.keySet();
+            columnsArray = columnKeys.toArray(new String[columnKeys.size()]);
+
+            if(columnsArray.length > 1)
             {
                 StringBuilder sb = new StringBuilder();
                 String selectionString = "";
-                String[] selectionArgs = new String[selection.size()];
-                String column = "";
-                for(int i = 0; i < selection.size(); i++)
+                String[] selectionArgs = new String[columnsArray.length];
+                columnsArray = columnKeys.toArray(new String[columnKeys.size()]);
+
+                for(int i = 0; i < columnsArray.length; i++)
                 {
-                    column = selection.keySet().toArray()[i].toString();
-                    selectionArgs[i] = selection.get(column);
-                    if(i != selection.size() - 1)
+                    selectionArgs[i] = selection.get(columnsArray[i]);
+                    if(i == (columnsArray.length - 1))
                     {
-                        sb.append(column + " IN (?) AND ");
+                        sb.append(columnsArray[i]).append(" IN (?)");
                     }
                     else
                     {
-                        sb.append(column + " IN (?)");
+                        sb.append(columnsArray[i]).append(" IN (?)").append(" AND ");
                     }
                 }
 
                 selectionString = sb.toString();
-                Log.d("selection string => ", selectionString);
-                Log.d("selection args => ", Arrays.toString(selectionArgs));
+
                 cursor = db.query(tableName, columns, selectionString, selectionArgs, options.get(0),
                         options.get(1), options.get(2), options.get(3));
-            }
-            else
+            }else
             {
-                String key = selection.keySet().toArray()[0].toString();
-                cursor = db.query(tableName, columns, key+" IN (?)",
-                        selection.get(key).toString().split(""), options.get(0),
+                String key = String.valueOf(columnsArray[0]);
+                Log.d(key.toUpperCase()+" => ", key + " " + selection.get(key));
+                cursor = db.query(tableName, columns, key.toLowerCase()+" IN (?)",
+                        new String[]{selection.get(key)}, options.get(0),
                         options.get(1), options.get(2), options.get(3));
             }
 
@@ -237,6 +256,7 @@ public class DatabaseTableHandler {
         catch (Exception e)
         {
             Log.d("EXCEPTION => ", e.getMessage());
+            Log.d("HERE => ", String.valueOf(e.getStackTrace()[0].getLineNumber()));
         }
         finally {
             if(cursor != null)

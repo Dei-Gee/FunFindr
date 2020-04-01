@@ -52,11 +52,12 @@ public class FunFindrDB extends SQLiteOpenHelper {
         /* Events Table */
         TABLE3.addColumn("_id", "INTEGER", true, true, true);
         TABLE3.addColumn("user_id", "INTEGER", false, false, true);
+        TABLE3.addColumn("title", "VARCHAR", false, false, true);
         TABLE3.addColumn("location", "VARCHAR", false, false, true);
         TABLE3.addColumn("address", "VARCHAR", false, false, true);
         TABLE3.addColumn("type", "VARCHAR", false, false, true);
         TABLE3.addColumn("notes", "TEXT", false, false, false);
-        TABLE3.addColumn("date", "DATETIME", false, false, true);
+        TABLE3.addColumn("date", "TEXT", false, false, true);
 
         // Create Tables
         DatabaseTableHandler.createTable(db, TABLE1);

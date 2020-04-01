@@ -12,6 +12,7 @@ import com.example.funfindr.utilites.FragmentHandler;
 import com.example.funfindr.utilites.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -30,6 +31,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainUIActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -75,8 +77,8 @@ public class MainUIActivity extends AppCompatActivity
 
         // NAVIGATION HEADER
         View headerView = navigationView.getHeaderView(0);
-        TextView loggedInName = (TextView) headerView.findViewById(R.id.textViewUserFullNameLoggedIn);
-        TextView loggedInEmail = (TextView) headerView.findViewById(R.id.textViewUserEmailLoggedIn);
+        TextView loggedInName = headerView.findViewById(R.id.textViewUserFullNameLoggedIn);
+        TextView loggedInEmail = headerView.findViewById(R.id.textViewUserEmailLoggedIn);
 
 
         /* Checking if SharedPreferences Values exist before they are used */
@@ -162,6 +164,7 @@ public class MainUIActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
             DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
+            Toast.makeText(MainUIActivity.this, "You have been logged out!", Toast.LENGTH_SHORT).show();
             finish();
         }
 

@@ -74,6 +74,7 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
                     newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
                     startActivity(newIntent);
+                    finish();
                 }
                 else
                 {
