@@ -1,5 +1,6 @@
 package com.example.funfindr.fragments;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
     GoogleMap mapApi;
+    private Boolean mLocationPermissionsGranted = false;
 
     @Nullable
     @Override
@@ -33,6 +36,17 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        Drawable drawable = getContext().getResources().getDrawable(R.drawable.ic_gps_fixed_blue_24dp);
+        fab.setImageDrawable(drawable);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "MAP!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         GoogleMapOptions googleMapOptions = new GoogleMapOptions();
         googleMapOptions.mapType(mapApi.MAP_TYPE_NORMAL).compassEnabled(true).liteMode(false);

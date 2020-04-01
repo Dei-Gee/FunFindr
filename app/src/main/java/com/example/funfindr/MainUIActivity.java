@@ -54,24 +54,7 @@ public class MainUIActivity extends AppCompatActivity
         // SHARED PREFERENCES
         SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", this);
 
-        // FLOATING ACTION BUTTON CLICK LISTENER
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragHandler.getCurrentFragment(); // gets the current fragment active in the container
 
-                // determines what this floating action button will do
-                if(fragHandler.getCurrentFragment() instanceof EventsFragment)
-                {
-                    fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
-                }
-                else if(GoogleMapFragment.class.isInstance(fragHandler.getCurrentFragment()))
-                {
-                    Toast.makeText(view.getContext(), "YAY!", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

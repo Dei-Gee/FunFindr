@@ -1,6 +1,7 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,6 +53,27 @@ public class EventsFragment extends Fragment {
         LinearLayout cardsContainer = (LinearLayout) getActivity().findViewById(R.id.cardsContainer);
 
         Collections.reverse(allEvents);
+
+        // Floating action button
+        FloatingActionButton fab = getActivity().findViewById(R.id.fab);
+        Drawable drawable = getContext().getResources().getDrawable(R.drawable.ic_add_blue_24dp);
+        fab.setImageDrawable(drawable);
+
+        // Fragment Handler
+        FragmentManager frag = getActivity().getSupportFragmentManager(); // initializes new Support Fragment Manager
+        final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
+        fragHandler.setFloatingActionButtonDrawable(fab, fragHandler.getCurrentFragment(), getContext());
+
+        // FLOATING ACTION BUTTON CLICK LISTENER
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragHandler.getCurrentFragment(); // gets the current fragment active in the container
+
+                fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
+
+            }
+        });
 
         for(Map<String,String> event : allEvents)
         {
