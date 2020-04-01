@@ -65,6 +65,11 @@ public class MainUIActivity extends AppCompatActivity
                 {
                     fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
                 }
+                else if(GoogleMapFragment.class.isInstance(fragHandler.getCurrentFragment()))
+                {
+                    Toast.makeText(view.getContext(), "YAY!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

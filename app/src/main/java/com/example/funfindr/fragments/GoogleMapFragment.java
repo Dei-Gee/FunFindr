@@ -51,7 +51,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
         float zoomLevel = 16.0f;
         MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.
         mapApi.addMarker(markerOptions.position(douglasCollege).title("Douglas College"));
         mapApi.moveCamera(CameraUpdateFactory.newLatLng(douglasCollege));
         mapApi.moveCamera(CameraUpdateFactory.newLatLngZoom(douglasCollege, zoomLevel));
