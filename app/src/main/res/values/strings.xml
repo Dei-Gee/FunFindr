@@ -81,6 +81,7 @@
     <string name="enter_event_notes">Notes...</string>
     <string name="enter_event_date">Date and Time</string>
     <string name="events_form_title">Create a new Event</string>
+    <string name="events_form_title_edit">Edit Event</string>
 
     <!-- Buttons -->
     <string name="buttonSubmit">Submit</string>

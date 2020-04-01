@@ -1,15 +1,16 @@
 package com.example.funfindr;
 
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
+import com.example.funfindr.utilites.DatabaseHandler;
 import com.example.funfindr.utilites.FragmentHandler;
+import com.example.funfindr.utilites.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.View;
@@ -29,10 +30,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.Menu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainUIActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,13 @@ public class MainUIActivity extends AppCompatActivity
         final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
 
 
-        // default fragment
+        // load default fragment
         fragHandler.loadFragment(new GoogleMapFragment(), MainUIActivity.this, fab);
 
+        // SHARED PREFERENCES
+        SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", this);
 
+        // FLOATING ACTION BUTTON CLICK LISTENER
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,11 +65,6 @@ public class MainUIActivity extends AppCompatActivity
                 {
                     fragHandler.floatingActionButtonHandler(view, fragHandler.getCurrentFragment().getClass(), new EventsFormFragment());
                 }
-                else if(fragHandler.getCurrentFragment() instanceof FavoritesFragment) {
-
-                }
-
-
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -74,6 +74,33 @@ public class MainUIActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        // NAVIGATION HEADER
+        View headerView = navigationView.getHeaderView(0);
+        TextView loggedInName = headerView.findViewById(R.id.textViewUserFullNameLoggedIn);
+        TextView loggedInEmail = headerView.findViewById(R.id.textViewUserEmailLoggedIn);
+
+
+        /* Checking if SharedPreferences Values exist before they are used */
+        if(sharedPreferences.contains("email"))
+        {
+            String email = SharedPreferencesManager.getString(sharedPreferences, "email");
+
+            if(!email.isEmpty())
+            {
+                loggedInEmail.setText(email);
+            }
+        }
+        if(sharedPreferences.contains("password"))
+        {
+            String firstname = SharedPreferencesManager.getString(sharedPreferences, "firstname");
+            String lastname = SharedPreferencesManager.getString(sharedPreferences, "lastname");
+
+            if(!firstname.isEmpty() && !lastname.isEmpty())
+            {
+                loggedInName.setText(firstname + " "+ lastname);
+            }
+        }
 
     }
 
@@ -135,7 +162,10 @@ public class MainUIActivity extends AppCompatActivity
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
-
+            SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
+            DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
+            Toast.makeText(MainUIActivity.this, "You have been logged out!", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

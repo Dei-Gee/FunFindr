@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewTextLogo" />
 
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/editTextEmailLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewBlurb" />
 
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/editTextPasswordLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -78,7 +78,7 @@
         app:backgroundTint="@color/colorFunFindrBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmailLogin" />
 
     <Button
         android:id="@+id/buttonLogin"
@@ -95,7 +95,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordLogin" />
 
     <TextView
         android:id="@+id/textViewSignupButton"

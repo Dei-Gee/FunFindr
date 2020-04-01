@@ -89,7 +89,7 @@ public class FragmentHandler {
             Drawable drawable = ctx.getResources().getDrawable(R.drawable.ic_add_blue_24dp);
             f.setImageDrawable(drawable);
         }
-        else if(EventsFormFragment.class.isInstance(currFrag)) {
+        else {
             f.setVisibility(View.INVISIBLE);
         }
 
