@@ -16,6 +16,7 @@ import com.example.funfindr.utilites.DatabaseHandler;
 import com.example.funfindr.utilites.SharedPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -112,13 +113,14 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
                     /* Passing User Data into the SharedPrefences to manage the session */
-                    ArrayList<String> data = new ArrayList<String>();
+                    HashMap<String,String> data = new HashMap<String,String>();
 
                     // add userData to data array list
                     for(Map.Entry<String,String> entry : userData.get(0).entrySet())
                     {
-                        data.add(entry.getValue());
+                        data.put(entry.getKey(),entry.getValue());
                     }
+
 
                     SharedPreferencesManager.editPreferences(LoginActivity.this, "String", sharedPreferences, data);
                     SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", true);

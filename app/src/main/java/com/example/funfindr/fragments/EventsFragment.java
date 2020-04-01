@@ -2,6 +2,7 @@ package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,9 @@ public class EventsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Shared Preferences
-        SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getActivity());
+        SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getContext());
         String email = SharedPreferencesManager.getString(sharedPreferences, "email");
+        Log.d("tsdtsdg", email);
         String userId = DatabaseHandler.getUserId(email);
 
         ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (userId);
