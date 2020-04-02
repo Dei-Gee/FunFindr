@@ -22,7 +22,10 @@
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashScreenTheme"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
