@@ -3,6 +3,7 @@ package com.example.funfindr.utilites;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -103,10 +104,11 @@ public class FragmentHandler {
      */
     public void floatingActionButtonHandler(View view, Class fragClass, Fragment newFrag) {
 
-        if(fragClass.isInstance(this.currentFragment))
+        if(EventsFragment.class.isInstance(this.currentFragment))
         {
             this.fragmentManager.beginTransaction().replace(R.id.content_frame, newFrag).addToBackStack("tag").commit();;
         }
+
 
     }
 
