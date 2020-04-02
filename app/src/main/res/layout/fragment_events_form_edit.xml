@@ -131,7 +131,9 @@
             app:layout_constraintVertical_bias="1.0"
             android:text="@string/buttonSubmit"
             android:textColor="@color/colorWhite"
-            android:backgroundTint="@color/colorFunFindrBlue" />
+            android:padding="5dip"
+            android:paddingHorizontal="16dip"
+            android:background="@drawable/find_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

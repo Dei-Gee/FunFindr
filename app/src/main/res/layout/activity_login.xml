@@ -89,7 +89,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/colorFunFindrBlue"
+        android:background="@drawable/find_button"
         android:text="@string/buttonLogin"
         android:textColor="@color/colorWhite"
         app:layout_constraintEnd_toEndOf="parent"

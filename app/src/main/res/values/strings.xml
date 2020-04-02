@@ -74,6 +74,9 @@
     <string name="buttonSubmit">Submit</string>
 
     <!-- Buttons -->
+    <string name="button_map_find">Find Restaurants</string>
+
+    <!-- Arrays -->
     <string-array name="event_types">
         <item>Birthday</item>
         <item>Breakfast</item>
