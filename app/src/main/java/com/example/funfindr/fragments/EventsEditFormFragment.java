@@ -3,7 +3,6 @@ package com.example.funfindr.fragments;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
-import com.example.funfindr.data.Event;
+import com.example.funfindr.database.Event;
 import com.example.funfindr.utilites.DatabaseHandler;
 import com.example.funfindr.utilites.FragmentHandler;
 import com.example.funfindr.utilites.SharedPreferencesManager;
@@ -150,7 +149,7 @@ public class EventsEditFormFragment extends Fragment {
                 newEvent.setType(typeOfEvent.get(0));
 
 
-                // data to passed in the update method
+                // database to passed in the update method
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put("title", newEvent.getTitle());

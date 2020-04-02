@@ -1,16 +1,15 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.utilites.handlers;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.funfindr.utilites.db_models.FunFindrDatabaseTable;
-import com.example.funfindr.utilites.db_models.FunFindrDatabaseTableColumn;
-import com.google.android.gms.common.util.NumberUtils;
+import com.example.funfindr.utilites.FunFindrUtils;
+import com.example.funfindr.database.db_structure_models.FunFindrDatabaseTable;
+import com.example.funfindr.database.db_structure_models.FunFindrDatabaseTableColumn;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -55,12 +54,12 @@ public class DatabaseTableHandler {
     }
 
     /**
-     * Inserts data into the table
-     * @param db This is the writable database that contains the table that the data will be
+     * Inserts database into the table
+     * @param db This is the writable database that contains the table that the database will be
      *           inserted into
-     * @param tableName This is the name of the table that the data will be inserted into
-     * @param data This is the data that will be inserted
-     * @return returns whether the data was successfully inserted or not
+     * @param tableName This is the name of the table that the database will be inserted into
+     * @param data This is the database that will be inserted
+     * @return returns whether the database was successfully inserted or not
      */
     public static boolean insert(SQLiteDatabase db, String tableName, HashMap<String,String> data) {
         ContentValues values = new ContentValues();
@@ -88,14 +87,14 @@ public class DatabaseTableHandler {
     }
 
     /**
-     * Updates data in the table
-     * @param db This is the writable database that contains the table that the data will be
+     * Updates database in the table
+     * @param db This is the writable database that contains the table that the database will be
      *           inserted into
      * @param tableName This is the name of the table that will be updated
      * @param column This is the column that will be the filter
-     * @param data This is the data that will be matched against the filter
+     * @param data This is the database that will be matched against the filter
      * @param entries The values to be put in the table
-     * @return returns whether the data was successfully updated or not
+     * @return returns whether the database was successfully updated or not
      */
     public static boolean update(SQLiteDatabase db, String tableName, String column, String data, HashMap<String,String> entries) {
         ContentValues values = new ContentValues();
@@ -118,13 +117,13 @@ public class DatabaseTableHandler {
     }
 
     /**
-     * Updates data in the table
-     * @param db This is the writable database that contains the table that the data will be
+     * Updates database in the table
+     * @param db This is the writable database that contains the table that the database will be
      *           inserted into
      * @param tableName This is the name of the table where the record will be deleted
      * @param column This is the column that will be the key for the where clause
-     * @param data This is the data that will be determine what row(s) will be deleted
-     * @return returns whether the data was successfully deleted or not
+     * @param data This is the database that will be determine what row(s) will be deleted
+     * @return returns whether the database was successfully deleted or not
      */
     public static boolean delete(SQLiteDatabase db, String tableName, String column, String data) {
         int delete = 0;
@@ -142,12 +141,12 @@ public class DatabaseTableHandler {
     }
 
     /**
-     * Updates data in the table
-     * @param db This is the writable database that contains the table that the data will be
+     * Updates database in the table
+     * @param db This is the writable database that contains the table that the database will be
      *           inserted into
      * @param tableName This is the name of the table where the record will be deleted
      * @param columns These are the columns that will be returned
-     * @param selection This arraylist contains the column and corresponding data that will be the
+     * @param selection This arraylist contains the column and corresponding database that will be the
      *                  filter to determine which rows will be returned. It is the equivalent of an
      *                  SQL WHERE clause
      * @param optionalParameters An arraylist containing the remaining parameters of the
@@ -161,7 +160,7 @@ public class DatabaseTableHandler {
      *                           Note: All these clauses are formatted without their keywords so
      *                           exclude them.
      * @param unique Boolean parameter that determines whether or not to return unique rows
-     * @return returns whether the data was successfully deleted or not
+     * @return returns whether the database was successfully deleted or not
      */
     public static ArrayList<Map<String,String>> select(SQLiteDatabase db, boolean unique, String tableName, String[] columns,
                                                         HashMap<String, String> selection, ArrayList<String> optionalParameters)

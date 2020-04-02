@@ -1,4 +1,4 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.utilites.handlers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,10 +6,11 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.funfindr.LoginActivity;
 import com.example.funfindr.WelcomeActivity;
-import com.example.funfindr.data.Event;
-import com.example.funfindr.data.User;
+import com.example.funfindr.database.Event;
+import com.example.funfindr.database.Favorite;
+import com.example.funfindr.database.User;
+import com.example.funfindr.database.FunFindrDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,7 +88,7 @@ public class DatabaseHandler {
 
         ArrayList<Map<String,String>> userData = null;
 
-        // if user exists get the user data
+        // if user exists get the user database
         if(checkIfUserExists(map.get("email"), map.get("password")))
         {
             userData = DatabaseTableHandler.select(sqldb, true, "users", returnColumns, map, null);
@@ -231,7 +232,7 @@ public class DatabaseHandler {
     /**
      * Updates the given event using its id
      * @param id The id of the event
-     * @param data The data that will be used to update the event
+     * @param data The database that will be used to update the event
      * @return returns a boolean value that stsates whether this operation was successful or not
      */
     public static boolean updateEvent(String id, HashMap<String,String> data)
@@ -249,6 +250,36 @@ public class DatabaseHandler {
 
 
     /* FAVORITE METHODS --start-- */
+
+    public boolean addFavorite(Favorite favorite, String email)
+    {
+        boolean success = false;
+
+        String userId = getUserId(email);
+
+        HashMap<String,String> insertionMap = new HashMap<>(); // map that will be used to insert a new event into the database
+
+        if(userId != null || userId != "")
+        {
+            insertionMap.put("user_id", userId);
+        }
+
+            insertionMap.put("address", favorite.getAddress());
+            insertionMap.put("admin", favorite.getAdmin());
+            insertionMap.put("sub_admin", favorite.getSubAdmin());
+            insertionMap.put("locality", favorite.getLocality());
+            insertionMap.put("postal_code", favorite.getPostalCode());
+            insertionMap.put("country_name", favorite.getCountryName());
+
+            if(DatabaseTableHandler.insert(sqldb, "favorites", insertionMap))
+            {
+                return true;
+            }
+
+
+        return success;
+    }
+
     /* FAVORITE METHODS --end-- */
 
 }

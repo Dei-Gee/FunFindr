@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.funfindr.data.User;
+import com.example.funfindr.database.User;
 import com.example.funfindr.utilites.DatabaseHandler;
 
 import java.io.FileNotFoundException;

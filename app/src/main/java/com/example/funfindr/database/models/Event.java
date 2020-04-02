@@ -1,6 +1,4 @@
-package com.example.funfindr.data;
-
-import java.sql.Date;
+package com.example.funfindr.database.models;
 
 public class Event {
     private String id = "";

@@ -1,4 +1,4 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.utilites.handlers;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;

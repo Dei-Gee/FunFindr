@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.utilites.adapters.CustomFavoritesAdapter;
 
 public class FavoritesFragment extends Fragment {
 
@@ -22,6 +23,10 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Bundle favData = getArguments();
+
+//        CustomFavoritesAdapter customFavoritesAdapter = new CustomFavoritesAdapter(getContext(), )
 
     }
 }

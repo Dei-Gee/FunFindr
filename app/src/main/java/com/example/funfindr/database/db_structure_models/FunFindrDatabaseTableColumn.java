@@ -1,4 +1,4 @@
-package com.example.funfindr.utilites.db_models;
+package com.example.funfindr.database.db_structure_models;
 
 public class FunFindrDatabaseTableColumn {
     private String TITLE = "";

@@ -1,10 +1,11 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.funfindr.utilites.db_models.FunFindrDatabaseTable;
+import com.example.funfindr.database.db_structure_models.FunFindrDatabaseTable;
+import com.example.funfindr.utilites.handlers.DatabaseTableHandler;
 
 public class FunFindrDB extends SQLiteOpenHelper {
     // FINAL GLOBAL VARIABLES
@@ -45,9 +46,12 @@ public class FunFindrDB extends SQLiteOpenHelper {
         /* Favorites Table */
         TABLE2.addColumn("_id", "INTEGER", true, true, true);
         TABLE2.addColumn("user_id", "INTEGER", false, false, true);
-        TABLE2.addColumn("name", "VARCHAR", false, false, true);
-        TABLE2.addColumn("logo", "BLOB", false, false, true);
-        TABLE2.addColumn("type", "VARCHAR", false, false, false);
+        TABLE2.addColumn("address", "VARCHAR", false, false, true);
+        TABLE2.addColumn("admin", "VARCHAR", false, false, true);
+        TABLE2.addColumn("sub_admin", "VARCHAR", false, false, true);
+        TABLE2.addColumn("locality", "VARCHAR", false, false, true);
+        TABLE2.addColumn("postal_code", "VARCHAR", false, false, true);
+        TABLE2.addColumn("country_name", "VARCHAR", false, false, true);
 
         /* Events Table */
         TABLE3.addColumn("_id", "INTEGER", true, true, true);

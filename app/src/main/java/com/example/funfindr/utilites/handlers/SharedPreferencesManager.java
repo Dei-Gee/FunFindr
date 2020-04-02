@@ -1,4 +1,4 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.utilites.handlers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +26,9 @@ public class SharedPreferencesManager {
     /**
      * Edits the values in the shared preferences
      * @param context The context of the Activity or Fragment calling this method
-     * @param type The type of data to be passed
+     * @param type The type of database to be passed
      * @param prefs The SharedPreferences Object
-     * @param data The data to be passed
+     * @param data The database to be passed
      */
     public static void editPreferences(Context context, String type, SharedPreferences prefs, HashMap<String,String> data)
     {
@@ -84,9 +84,9 @@ public class SharedPreferencesManager {
     }
 
     /**
-     * Returns a string value of the SharedPreferences data based on a its key
+     * Returns a string value of the SharedPreferences database based on a its key
      * @param prefs The SharedPreferences Object
-     * @param key The key used to find the data
+     * @param key The key used to find the database
      * @return returns the value of the key passed
      */
     public static String getString (SharedPreferences prefs, String key)

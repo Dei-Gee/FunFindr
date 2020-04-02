@@ -18,10 +18,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.funfindr.R;
-import com.example.funfindr.data.Event;
+import com.example.funfindr.database.Event;
 import com.example.funfindr.utilites.DatabaseHandler;
 import com.example.funfindr.utilites.FragmentHandler;
 import com.example.funfindr.utilites.SharedPreferencesManager;

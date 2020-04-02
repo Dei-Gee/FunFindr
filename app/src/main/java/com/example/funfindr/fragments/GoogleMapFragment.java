@@ -142,11 +142,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         placesClient = Places.createClient(getContext());
         final AutocompleteSessionToken token = AutocompleteSessionToken.newInstance();
 
-
-
-
-
-
         // MATERIAL SEARCH BAR EVENT LISTENERS
         materialSearchBar.setOnSearchActionListener(new MaterialSearchBar.OnSearchActionListener() {
             @Override
@@ -447,7 +442,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        // Retrieve the data from the marker.
+        // Retrieve the database from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
         // Check if a click count was set, then display the click count.
@@ -518,7 +513,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         if(list.size() > 0){
             Address address = list.get(0);
 
-            Log.d(TAG, ("geoLocate: found a location: ").toUpperCase() + address.getAddressLine(0).toString());
+            Log.d(TAG, ("geoLocate: found a location: ").toUpperCase() + address.toString());
             //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             currentMarkerLocation = new LatLng(address.getLatitude(), address.getLongitude());

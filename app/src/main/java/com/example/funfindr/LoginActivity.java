@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                     userData = DatabaseHandler.LoginUser(iLDetails);
                 }
 
-                // check if user data is null
+                // check if user database is null
                 if(userData != null)
                 {
                     Log.d("USER DATA", userData.toString());
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
                     HashMap<String,String> data = new HashMap<String,String>();
 
 
-                    // add userData to data array list	                    // add userData to data array list
+                    // add userData to database array list	                    // add userData to database array list
                     for(Map.Entry<String,String> entry : userData.get(0).entrySet())
                     {
                         data.put(entry.getKey(),entry.getValue());

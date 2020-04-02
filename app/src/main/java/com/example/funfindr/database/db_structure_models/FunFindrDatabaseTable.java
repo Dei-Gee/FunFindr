@@ -1,11 +1,7 @@
-package com.example.funfindr.utilites.db_models;
+package com.example.funfindr.database.db_structure_models;
 
-import android.util.Log;
-
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FunFindrDatabaseTable {
