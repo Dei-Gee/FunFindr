@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.funfindr">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
@@ -14,16 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
+        <activity android:name=".WelcomeActivity"></activity>
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/GOOGLE_API_KEY" />
         <activity
             android:name=".MainUIActivity"
             android:label="@string/title_activity_main_ui"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SignupActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SignupActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/SplashScreenTheme">
+            android:theme="@style/SplashScreenTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,7 +40,12 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GOOGLE_API_KEY" />
     </application>
 
 </manifest>
