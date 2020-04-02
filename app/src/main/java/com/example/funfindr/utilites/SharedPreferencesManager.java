@@ -10,6 +10,8 @@ import com.example.funfindr.LoginActivity;
 import com.example.funfindr.MainUIActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SharedPreferencesManager {
     private static final String DEFAULT_MESSAGE = "Value not found";
@@ -32,23 +34,23 @@ public class SharedPreferencesManager {
      * @param prefs The SharedPreferences Object
      * @param data The data to be passed
      */
-    public static void editPreferences(Context context, String type, SharedPreferences prefs, ArrayList<String> data)
+    public static void editPreferences(Context context, String type, SharedPreferences prefs, HashMap<String,String> data)
     {
         SharedPreferences.Editor editor = prefs.edit();
 
         switch(type.toLowerCase())
         {
             case "string":
-                for(String s : data)
+                for(Map.Entry<String,String> entry : data.entrySet())
                 {
-                    editor.putString(s.toLowerCase(), s);
+                    editor.putString(entry.getKey(), entry.getValue());
                 }
                 editor.commit();
             break;
             case "integer":
-                for(String s : data)
+                for(Map.Entry<String,String> entry : data.entrySet())
                 {
-                    editor.putInt(s.toLowerCase(), Integer.parseInt(s));
+                    editor.putInt(entry.getKey(), Integer.parseInt(entry.getValue()));
                 }
                 editor.commit();
             break;

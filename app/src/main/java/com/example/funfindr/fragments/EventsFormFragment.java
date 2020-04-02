@@ -52,6 +52,7 @@ public class EventsFormFragment extends Fragment {
         final SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getActivity());
 
         final FloatingActionButton fab = getActivity().findViewById(R.id.fab); // floating action button
+        fab.setVisibility(View.INVISIBLE);
         Button submitButton = getActivity().findViewById(R.id.buttonSubmit);
 
         // FIELDS
