@@ -25,11 +25,7 @@ public class Event {
         this.id = _id;
     }
 
-
-
     // getters and setters
-
-
     public String getId() {
         return id;
     }

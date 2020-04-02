@@ -45,7 +45,6 @@ public class EventsFragment extends Fragment {
         // Shared Preferences
         SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getContext());
         String email = SharedPreferencesManager.getString(sharedPreferences, "email");
-        Log.d("tsdtsdg", email);
         String userId = DatabaseHandler.getUserId(email);
 
         ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (userId);

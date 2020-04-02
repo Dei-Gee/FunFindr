@@ -14,7 +14,7 @@ public class FunFindrDB extends SQLiteOpenHelper {
     private static final FunFindrDatabaseTable TABLE2 = new FunFindrDatabaseTable("favorites");
     private static final FunFindrDatabaseTable TABLE3 = new FunFindrDatabaseTable("events");
 
-    // Compuslory Constructor
+    // Compulsory Constructor
     public FunFindrDB(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -64,7 +64,6 @@ public class FunFindrDB extends SQLiteOpenHelper {
         DatabaseTableHandler.createTable(db, TABLE2,"user_id", TABLE1, TABLE1.getCOLUMN("_id"));
         DatabaseTableHandler.createTable(db, TABLE3,"user_id", TABLE1, TABLE1.getCOLUMN("_id"));
 
-
     }
 
     @Override
@@ -75,9 +74,5 @@ public class FunFindrDB extends SQLiteOpenHelper {
         DatabaseTableHandler.dropTableIfExists(db, TABLE3.getNAME());
         onCreate(db); // recreate database
     }
-
-
-
-
 
 }

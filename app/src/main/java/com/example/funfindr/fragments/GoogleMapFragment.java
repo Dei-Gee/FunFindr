@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,7 +31,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
@@ -44,11 +54,13 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+    MarkerOptions markerOptions = new MarkerOptions();
     /* GLOBAL VARIABLES --end-- */
 
     @Nullable
     @Override
-    public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_google_maps, container, false);
     }
@@ -64,7 +76,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(view.getContext(), "MAP!", Toast.LENGTH_SHORT).show();
                 getLocationPermission();
                 getDeviceLocation();
             }
@@ -89,19 +100,17 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         mapApi = googleMap;
         LatLng douglasCollege = new LatLng(49.203771, -122.912636);
 
-        MarkerOptions markerOptions = new MarkerOptions();
+
         mapApi.addMarker(markerOptions.position(douglasCollege).title("Douglas College"));
         mapApi.moveCamera(CameraUpdateFactory.newLatLng(douglasCollege));
         mapApi.moveCamera(CameraUpdateFactory.newLatLngZoom(douglasCollege, DEFAULT_ZOOM));
+
 
         // Allows the map to move to a location that is cliked and place the marker there
         mapApi.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
             @Override
             public void onMapClick(LatLng latLng) {
-
-                // Creating a marker
-                MarkerOptions markerOptions = new MarkerOptions();
 
                 // Setting the position for the marker
                 markerOptions.position(latLng);
@@ -175,6 +184,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
      */
     @Override
     public boolean onMarkerClick(Marker marker) {
+
         // Retrieve the data from the marker.
         Integer clickCount = (Integer) marker.getTag();
 
@@ -187,6 +197,8 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
         return false;
     }
+
+
 
     /**
      * Gets the persmission from the user to access their location

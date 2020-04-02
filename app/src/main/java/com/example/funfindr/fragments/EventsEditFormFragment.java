@@ -116,6 +116,7 @@ public class EventsEditFormFragment extends Fragment {
 
         String time = "";
 
+        // Chekcs the value of the time of event
         if(timeOfEvent == null || timeOfEvent.size() == 0)
         {
             time = " " + eTimeHour + ":"+ eTimeMinute +":"+"00.000";
@@ -134,6 +135,8 @@ public class EventsEditFormFragment extends Fragment {
 
                 newEvent.setTitle(eventTitle.getText().toString());
                 newEvent.setAddress(eventAddress.getText().toString());
+
+                // Checks the value of the event's date
                 if(dateOfEvent == null || dateOfEvent.size() == 0)
                 {
                     newEvent.setDate(formattedDateTime[0] + finalTime);
@@ -141,6 +144,7 @@ public class EventsEditFormFragment extends Fragment {
                 else{
                     newEvent.setDate(dateOfEvent.get(0) + finalTime);
                 }
+
                 newEvent.setLocation(eventLocation.getText().toString());
                 newEvent.setNotes(eventNotes.getText().toString());
                 newEvent.setType(typeOfEvent.get(0));
@@ -158,6 +162,7 @@ public class EventsEditFormFragment extends Fragment {
 
                 String userId = DatabaseHandler.getUserId(SharedPreferencesManager.getString(sharedPreferences, "email"));
 
+                // Checks if the event is successfully updated or not
                 if(DatabaseHandler.updateEvent(evId, data))
                 {
                     Toast.makeText(getActivity(), "Event has been updated!", Toast.LENGTH_SHORT).show();
@@ -171,6 +176,11 @@ public class EventsEditFormFragment extends Fragment {
         });
     }
 
+    /**
+     * Gets the date of the event through the CalendarView's OnDateChangeLIstener() method
+     * @param calendarView The CalendarView
+     * @return returns and ArrayList with the values of the date
+     */
     public ArrayList<String> getDateOfEvent(CalendarView calendarView)
     {
         final ArrayList<String> edate = new ArrayList<String>();
@@ -194,6 +204,11 @@ public class EventsEditFormFragment extends Fragment {
         return edate;
     }
 
+    /**
+     * Gets the type of event through the Spinner's OnItemSelectedListener() method
+     * @param spinner The Spinner
+     * @return returns and ArrayList with the values of the type
+     */
     public ArrayList<String> getTypeOfEvent(Spinner spinner)
     {
         final ArrayList<String> eType = new ArrayList<String>();
@@ -212,6 +227,11 @@ public class EventsEditFormFragment extends Fragment {
         return eType;
     }
 
+    /**
+     * Gets the time of the event through the TimePicker's OnTimeChangedListener() method
+     * @param timePicker The TimePicker
+     * @return returns and ArrayList with the values of the time
+     */
     public ArrayList<String> getTimeOfEvent(TimePicker timePicker)
     {
         final ArrayList<String> eTime = new ArrayList<String>();

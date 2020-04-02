@@ -116,8 +116,8 @@ public class DatabaseHandler {
 
     /**
      * Checks if any user in the database has the smae email and password
-     * @param email
-     * @param password
+     * @param email The user's email
+     * @param password The user's password
      * @return returns whether a user exists with the passed in credentials or not
      */
     public static boolean checkIfUserExists(String email, String password)
@@ -129,7 +129,7 @@ public class DatabaseHandler {
 
         ArrayList<Map<String,String>> userData = DatabaseTableHandler.select(sqldb, false, "users", returnColumns, selectMap, null);
 
-        if(userData == null || userData.size() < 1)
+        if(userData.size() < 1)
         {
             return false;
         }

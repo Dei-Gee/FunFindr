@@ -43,9 +43,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/GOOGLE_API_KEY" />
     </application>
 
 </manifest>

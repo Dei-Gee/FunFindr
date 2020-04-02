@@ -111,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                     /* Passing User Data into the SharedPrefences to manage the session */
                     HashMap<String,String> data = new HashMap<String,String>();
 
-                    // add userData to data array list
+
+                    // add userData to data array list	                    // add userData to data array list
                     for(Map.Entry<String,String> entry : userData.get(0).entrySet())
                     {
                         data.put(entry.getKey(),entry.getValue());

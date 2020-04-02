@@ -5,11 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.example.funfindr.LoginActivity;
 import com.example.funfindr.MainUIActivity;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +14,7 @@ public class SharedPreferencesManager {
 
     /**
      * Creates and new SharedPreferences instance or calls an existing one
-     * @param name
+     * @param name The name of the shared preferences object
      * @return returns SharedPreferencs object
      */
     public static SharedPreferences newPreferences(String name, Context context)
@@ -46,14 +42,14 @@ public class SharedPreferencesManager {
                     editor.putString(entry.getKey(), entry.getValue());
                 }
                 editor.commit();
-            break;
+                break;
             case "integer":
                 for(Map.Entry<String,String> entry : data.entrySet())
                 {
                     editor.putInt(entry.getKey(), Integer.parseInt(entry.getValue()));
                 }
                 editor.commit();
-            break;
+                break;
             default:
                 Log.d("ERROR! => ", "SOMETHING WENT WRONG");
         }
