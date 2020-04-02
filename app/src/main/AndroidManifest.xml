@@ -10,12 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".WelcomeActivity"></activity>
         <activity
             android:name=".MainUIActivity"
             android:label="@string/title_activity_main_ui"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".SignupActivity" android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".SignupActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashScreenTheme"
@@ -30,7 +33,10 @@
             android:name=".LoginActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/GOOGLE_API_KEY" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/GOOGLE_API_KEY" />
     </application>
 
 </manifest>

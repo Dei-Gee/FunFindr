@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.funfindr.LoginActivity;
+import com.example.funfindr.WelcomeActivity;
 import com.example.funfindr.data.Event;
 import com.example.funfindr.data.User;
 
@@ -109,7 +110,7 @@ public class DatabaseHandler {
 
         if(!prefs.getBoolean("userLoggedIn", false))
         {
-            context.startActivity(new Intent(context, LoginActivity.class));
+            context.startActivity(new Intent(context, WelcomeActivity.class));
         }
     }
 

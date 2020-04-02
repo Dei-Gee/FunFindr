@@ -61,6 +61,19 @@
     <string name="text_event_location">Location</string>
 
     <!-- Events Types Array -->
+    <string name="enter_event_name">Name of event</string>
+
+    <!-- Events Form -->
+    <string name="select_event_type">Type of event</string>
+    <string name="enter_event_location">Location of event</string>
+    <string name="enter_event_address">Venue Address</string>
+    <string name="enter_event_notes">Notes...</string>
+    <string name="enter_event_date">Date and Time</string>
+    <string name="events_form_title">Create a new Event</string>
+    <string name="events_form_title_edit">Edit Event</string>
+    <string name="buttonSubmit">Submit</string>
+
+    <!-- Buttons -->
     <string-array name="event_types">
         <item>Birthday</item>
         <item>Breakfast</item>
@@ -72,17 +85,4 @@
         <item>Party</item>
         <item>Workout</item>
     </string-array>
-
-    <!-- Events Form -->
-    <string name="enter_event_name">Name of event</string>
-    <string name="select_event_type">Type of event</string>
-    <string name="enter_event_location">Location of event</string>
-    <string name="enter_event_address">Venue Address</string>
-    <string name="enter_event_notes">Notes...</string>
-    <string name="enter_event_date">Date and Time</string>
-    <string name="events_form_title">Create a new Event</string>
-    <string name="events_form_title_edit">Edit Event</string>
-
-    <!-- Buttons -->
-    <string name="buttonSubmit">Submit</string>
 </resources>
