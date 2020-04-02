@@ -75,6 +75,7 @@
 
     <!-- Buttons -->
     <string name="button_map_find">Find Restaurants</string>
+    <string name="button_map_add_to_favorites">Add to Favorites</string>
 
     <!-- Arrays -->
     <string-array name="event_types">

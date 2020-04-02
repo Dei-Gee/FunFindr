@@ -9,6 +9,7 @@
     android:layout_marginTop="16dp">
 
     <LinearLayout
+        android:id="@+id/linearLayoutContainerFavorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -29,14 +30,6 @@
                 android:text="@string/text_place_name"
                 android:textSize="16dp"
                 android:textColor="@color/colorBlack"/>
-
-            <ImageView
-                android:id="@+id/imageViewEditButtonFavorites"
-                android:layout_width="0dip"
-                android:layout_height="24dip"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_edit_black_24dp"
-                android:layout_weight="1"/>
 
             <ImageView
                 android:id="@+id/imageViewDeleteButtonFavorites"

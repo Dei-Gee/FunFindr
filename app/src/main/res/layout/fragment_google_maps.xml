@@ -61,8 +61,10 @@
         android:layout_marginRight="64dp"
         android:layout_marginBottom="60dp"
         android:background="@drawable/find_button"
-        android:paddingHorizontal="8dip"
-        android:text="@string/button_map_find"
-        android:textColor="@color/colorWhite" />
+        android:paddingHorizontal="16dip"
+        android:text="@string/button_map_add_to_favorites"
+        android:textColor="@color/colorWhite"
+        android:drawableLeft="@drawable/ic_menu_favorite_black_24dp"
+        android:drawableTint="@color/colorWhite"/>
 
 </RelativeLayout>

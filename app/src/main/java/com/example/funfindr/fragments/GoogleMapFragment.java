@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -29,6 +31,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.database.models.Favorite;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -77,6 +82,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     /* GLOBAL VARIABLES --start-- */
 
     GoogleMap gMap;
+    private final String MYPREFERENCES= "MyPrefs";
     private Boolean mLocationPermissionsGranted = false;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlacesClient placesClient;
@@ -84,6 +90,8 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     private Location lastKnownLocation;
     private LocationCallback locationCallback;
     Bundle mapFavoriteBundle = new Bundle();
+
+
 
     MarkerOptions markerOptions = new MarkerOptions();
     Marker mapMarker;
@@ -123,12 +131,17 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
+
         materialSearchBar = getActivity().findViewById(R.id.searchBarMap);
         buttonFind = getActivity().findViewById(R.id.buttonMapButton);
         rippleBg = getActivity().findViewById(R.id.ripple_bg);
 
+        final SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences(MYPREFERENCES, getContext());
 
-        GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+
+
+        final GoogleMapOptions googleMapOptions = new GoogleMapOptions();
         googleMapOptions.mapType(gMap.MAP_TYPE_NORMAL).compassEnabled(true).liteMode(false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -283,6 +296,28 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
                         rippleBg.stopRippleAnimation();
 //                        startActivity(new Intent(MapActivity.this, MainActivity.class));
 //                        finish();
+                        // If the bundle is not empty
+                        if(mapFavoriteBundle != null)
+                        {
+                            String userId = SharedPreferencesManager.getString(sharedPreferences, "_id");
+                            Favorite newFavorite = new Favorite();
+                            newFavorite.setUserId(userId);
+                            newFavorite.setAddress(mapFavoriteBundle.getString("address"));
+                            newFavorite.setLocality(mapFavoriteBundle.getString("locality"));
+                            newFavorite.setPostalCode(mapFavoriteBundle.getString("postal_code"));
+                            newFavorite.setAdmin(mapFavoriteBundle.getString("admin"));
+                            newFavorite.setSubAdmin(mapFavoriteBundle.getString("sub_admin"));
+                            newFavorite.setCountryName(mapFavoriteBundle.getString("country_name"));
+
+                            if(DatabaseHandler.addFavorite(database, newFavorite))
+                            {
+                                Toast.makeText(getContext(), "Added to Favorites!", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(), "Failed to add to favorites!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarkerLocation, DEFAULT_ZOOM));
                         gMap.setTrafficEnabled(true);
                         gMap.setMapType(2);
@@ -475,12 +510,21 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
                 String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 String city = addresses.get(0).getLocality();
-                String state = addresses.get(0).getAdminArea();
+                String admin = addresses.get(0).getAdminArea();
+                String subAdmin = addresses.get(0).getSubAdminArea();
                 String country = addresses.get(0).getCountryName();
                 String postalCode = addresses.get(0).getPostalCode();
                 String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 
                 Log.d("HERE => ", addresses.get(0).getAddressLine(0));
+
+                // ADD DATA TO BUNDLE
+                mapFavoriteBundle.putString("address", address);
+                mapFavoriteBundle.putString("locality", city);
+                mapFavoriteBundle.putString("admin", admin);
+                mapFavoriteBundle.putString("sub_admin", subAdmin);
+                mapFavoriteBundle.putString("postal_code", postalCode);
+                mapFavoriteBundle.putString("country_name", country);
 
                 if(address != null)
                 {
@@ -500,7 +544,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
      */
     public void getLocationFromSearchbar(CharSequence searchString)
     {
-//        String searchString = materialSearchBar.getText().toString();
 
         Geocoder geocoder = new Geocoder(getActivity());
         List<Address> list = new ArrayList<>();
@@ -512,9 +555,24 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
         if(list.size() > 0){
             Address address = list.get(0);
+            String fullAddress = address.getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = address.getLocality();
+            String admin = address.getAdminArea();
+            String subAdmin = address.getSubAdminArea();
+            String country = address.getCountryName();
+            String postalCode = address.getPostalCode();
+            String knownName = address.getFeatureName(); // Only if available else return NULL
 
             Log.d(TAG, ("geoLocate: found a location: ").toUpperCase() + address.toString());
             //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
+
+            // ADD DATA TO BUNDLE
+            mapFavoriteBundle.putString("address", fullAddress);
+            mapFavoriteBundle.putString("locality", city);
+            mapFavoriteBundle.putString("admin", admin);
+            mapFavoriteBundle.putString("sub_admin", subAdmin);
+            mapFavoriteBundle.putString("postal_code", postalCode);
+            mapFavoriteBundle.putString("country_name", country);
 
             currentMarkerLocation = new LatLng(address.getLatitude(), address.getLongitude());
             markerOptions.position(currentMarkerLocation);

@@ -1,8 +1,10 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.funfindr.R;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 public class EventsFragment extends Fragment {
 
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
 
     @Nullable
     @Override
@@ -41,12 +44,12 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Shared Preferences
         SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getContext());
-        String email = SharedPreferencesManager.getString(sharedPreferences, "email");
-        String userId = DatabaseHandler.getUserId(email);
+        String userId = SharedPreferencesManager.getString(sharedPreferences, "_id");
+        SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
 
-        ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (userId);
+        ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (database,userId);
 
-        LinearLayout cardsContainer = (LinearLayout) getActivity().findViewById(R.id.cardsContainer);
+        LinearLayout cardsContainer = getActivity().findViewById(R.id.cardsContainer);
 
         Collections.reverse(allEvents);
 
@@ -141,7 +144,7 @@ public class EventsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-                if(DatabaseHandler.deleteEvent(id))
+                if(DatabaseHandler.deleteEvent(database, id))
                 {
                     Toast.makeText(getActivity(), "Event deleted!", Toast.LENGTH_SHORT).show();
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);

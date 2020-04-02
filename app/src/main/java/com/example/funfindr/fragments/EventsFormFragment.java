@@ -1,6 +1,7 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,15 +21,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
-import com.example.funfindr.database.Event;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.database.models.Event;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class EventsFormFragment extends Fragment {
+
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class EventsFormFragment extends Fragment {
 
                 Log.d("EMAIL => ", SharedPreferencesManager.getString(sharedPreferences, "email"));
 
-                if(DatabaseHandler.createEvent(newEvent, SharedPreferencesManager.getString(sharedPreferences, "email")))
+                if(DatabaseHandler.createEvent(database, newEvent, SharedPreferencesManager.getString(sharedPreferences, "email")))
                 {
                     Toast.makeText(getActivity(), "New Event Created!", Toast.LENGTH_SHORT).show();
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);

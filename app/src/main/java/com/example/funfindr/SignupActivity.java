@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,13 +18,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.funfindr.database.User;
-import com.example.funfindr.utilites.DatabaseHandler;
+import com.example.funfindr.database.models.User;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class SignupActivity extends AppCompatActivity {
+
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(this);
 
     private static final int SELECT_PHOTO = 1;
     private static final int CAPTURE_PHOTO = 2;
@@ -69,7 +72,7 @@ public class SignupActivity extends AppCompatActivity {
                 userLoginDetails[0] = newUser.getEmail();
                 userLoginDetails[1] = newUser.getPassword();
 
-                if(DatabaseHandler.SignupUser(newUser))
+                if(DatabaseHandler.SignupUser(database, newUser))
                 {
                     Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
                     newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
@@ -78,7 +81,7 @@ public class SignupActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    if(DatabaseHandler.checkIfUserExists(userLoginDetails[0], userLoginDetails[1]) == true)
+                    if(DatabaseHandler.checkIfUserExists(database, userLoginDetails[0], userLoginDetails[1]) == true)
                     {
                         Toast.makeText(SignupActivity.this, "Email/Password already taken", Toast.LENGTH_SHORT).show();
                     }

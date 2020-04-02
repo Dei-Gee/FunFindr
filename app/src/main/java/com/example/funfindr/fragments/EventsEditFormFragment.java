@@ -1,6 +1,7 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,10 +22,11 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
-import com.example.funfindr.database.Event;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.database.models.Event;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -34,6 +36,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class EventsEditFormFragment extends Fragment {
+
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -159,10 +164,10 @@ public class EventsEditFormFragment extends Fragment {
                 data.put("notes", newEvent.getNotes());
                 data.put("address", newEvent.getAddress());
 
-                String userId = DatabaseHandler.getUserId(SharedPreferencesManager.getString(sharedPreferences, "email"));
+                String userId = DatabaseHandler.getUserId(database, SharedPreferencesManager.getString(sharedPreferences, "email"));
 
                 // Checks if the event is successfully updated or not
-                if(DatabaseHandler.updateEvent(evId, data))
+                if(DatabaseHandler.updateEvent(database, evId, data))
                 {
                     Toast.makeText(getActivity(), "Event has been updated!", Toast.LENGTH_SHORT).show();
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);

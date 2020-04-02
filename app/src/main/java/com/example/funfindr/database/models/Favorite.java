@@ -3,6 +3,7 @@ package com.example.funfindr.database.models;
 
 public class Favorite  {
     private String id;
+    private String user_id;
     private String address;
     private String admin;
     private String subAdmin;
@@ -13,9 +14,9 @@ public class Favorite  {
     // empty constructor
     public Favorite(){}
 
-    public Favorite(String _id, String _address, String _admin, String _subAdmin, String _locality, String _postalCode, String _countryName)
+    public Favorite(String _user_id, String _address, String _admin, String _subAdmin, String _locality, String _postalCode, String _countryName)
     {
-        this.id = _id;
+        this.user_id = user_id;
         this.address = _address;
         this.admin = _admin;
         this.subAdmin = _subAdmin;
@@ -29,8 +30,12 @@ public class Favorite  {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getAddress() {

@@ -53,6 +53,7 @@ public class SharedPreferencesManager {
             default:
                 Log.d("ERROR! => ", "SOMETHING WENT WRONG");
         }
+        editor.commit();
 
     }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     /* GLOBALS */
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(this);
     public static final String MyPREFERENCES = "MyPrefs" ;
     // SESSION MANAGEMENT
     SharedPreferences sharedPreferences;
@@ -96,10 +98,10 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     formLoginDetails[0] = useremail.getText().toString();
                     formLoginDetails[1] = userpassword.getText().toString();
-                    userData = DatabaseHandler.LoginUser(formLoginDetails);
+                    userData = DatabaseHandler.LoginUser(database, formLoginDetails);
                 }
                 else {
-                    userData = DatabaseHandler.LoginUser(iLDetails);
+                    userData = DatabaseHandler.LoginUser(database, iLDetails);
                 }
 
                 // check if user database is null
@@ -112,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     HashMap<String,String> data = new HashMap<String,String>();
 
 
-                    // add userData to database array list	                    // add userData to database array list
+                    // add userData to database array list
                     for(Map.Entry<String,String> entry : userData.get(0).entrySet())
                     {
                         data.put(entry.getKey(),entry.getValue());
@@ -126,10 +128,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    if(!DatabaseHandler.checkIfUserExists(formLoginDetails[0], formLoginDetails[1]))
+                    if(!DatabaseHandler.checkIfUserExists(database, formLoginDetails[0], formLoginDetails[1]))
                     {
                         SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", false);
-                        Toast.makeText(LoginActivity.this, "Sorry! You don't have an account", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Sorry! Login Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
