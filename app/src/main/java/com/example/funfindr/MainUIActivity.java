@@ -143,15 +143,17 @@ public class MainUIActivity extends AppCompatActivity
             f.loadFragment(new FavoritesFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_events) {
             f.loadFragment(new EventsFragment(), MainUIActivity.this, fb);
-        } else if (id == R.id.nav_information) {
-
-        } else if (id == R.id.nav_settings) {
+        }  else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
             SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
             DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
             Toast.makeText(MainUIActivity.this, "You have been logged out!", Toast.LENGTH_SHORT).show();
             finish();
+        }
+        else if (id == R.id.nav_exit)
+        {
+            System.exit(0);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

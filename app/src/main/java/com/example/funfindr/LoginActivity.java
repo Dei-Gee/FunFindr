@@ -24,7 +24,6 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     /* GLOBALS */
-    private final SQLiteDatabase database = DatabaseHandler.getWritable(this);
     public static final String MyPREFERENCES = "MyPrefs" ;
     // SESSION MANAGEMENT
     SharedPreferences sharedPreferences;
@@ -34,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sharedPreferences = SharedPreferencesManager.newPreferences(MyPREFERENCES, this);
+        final SQLiteDatabase database = DatabaseHandler.getWritable(this);
 
         // CHECK IF USER IS LOGGED IN
         if(sharedPreferences.getBoolean("userLoggedIn", false))
@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
         goToSignupActivity(textViewSignup);
 
-        goToMainUIActivity(buttonLogin, intentLoginDetails, userEmail, userPassword);
+        goToMainUIActivity(database, buttonLogin, intentLoginDetails, userEmail, userPassword);
 
     }
 
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onRestart();
     }
 
-    private void goToMainUIActivity(Button button, final String[] iLDetails, final EditText useremail, final EditText userpassword)
+    private void goToMainUIActivity(final SQLiteDatabase db, Button button, final String[] iLDetails, final EditText useremail, final EditText userpassword)
     {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +98,10 @@ public class LoginActivity extends AppCompatActivity {
                 {
                     formLoginDetails[0] = useremail.getText().toString();
                     formLoginDetails[1] = userpassword.getText().toString();
-                    userData = DatabaseHandler.LoginUser(database, formLoginDetails);
+                    userData = DatabaseHandler.LoginUser(db, formLoginDetails);
                 }
                 else {
-                    userData = DatabaseHandler.LoginUser(database, iLDetails);
+                    userData = DatabaseHandler.LoginUser(db, iLDetails);
                 }
 
                 // check if user database is null
@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    if(!DatabaseHandler.checkIfUserExists(database, formLoginDetails[0], formLoginDetails[1]))
+                    if(!DatabaseHandler.checkIfUserExists(db, formLoginDetails[0], formLoginDetails[1]))
                     {
                         SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", false);
                         Toast.makeText(LoginActivity.this, "Sorry! Login Failed!", Toast.LENGTH_SHORT).show();

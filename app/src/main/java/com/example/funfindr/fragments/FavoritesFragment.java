@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +51,8 @@ public class FavoritesFragment extends Fragment {
         // views
         ListView listViewFavorites = getActivity().findViewById(R.id.listViewFavorites);
 
+//        LinearLayout linearLayout = getActivity().findViewById(R.id.linearLayoutContainerFavorites);
+
 
         Bundle favArgs = getArguments();
         List<Favorite> favoriteList = new ArrayList<Favorite>();
@@ -65,6 +70,27 @@ public class FavoritesFragment extends Fragment {
             newFavorite.setSubAdmin(favorite.get("sub_admin"));
             newFavorite.setCountryName(favorite.get("country_name"));
             favoriteList.add(newFavorite);
+
+//            CardView card;
+//            card = (CardView) View.inflate(getActivity(), R.layout.cards_layout_favorites, null);
+//            CardView.LayoutParams params = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//            params.setMargins(0,16,0,16);
+//            card.setLayoutParams(params);
+//
+//            // CARD VIEWS
+//            TextView postalCode = card.findViewById(R.id.textViewPlaceName);
+//            TextView fullAddress = card.findViewById(R.id.textViewPlaceAddress);
+//            TextView localityAAdmin = card.findViewById(R.id.textTypeOfPlace);
+//            Button showEventOnMapButton = card.findViewById(R.id.buttonShowOnMapFavorites);
+//
+//
+//
+//            postalCode.setText(newFavorite.getPostalCode());
+//            fullAddress.setText(newFavorite.getAddress());
+//            localityAAdmin.setText(newFavorite.getAdmin() + ", " + newFavorite.getSubAdmin());
+//            card.invalidate();
+//            linearLayout.addView(card);
+
         }
 
         CustomFavoritesAdapter customFavoritesAdapter = new CustomFavoritesAdapter(getContext(), favoriteList);

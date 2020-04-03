@@ -66,7 +66,19 @@
             <ListView
                 android:id="@+id/listViewFavorites"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></ListView>
+                android:layout_height="wrap_content"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="10.0sp"></ListView>
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearLayoutContainerFavorites"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingBottom="128dip"-->
+<!--                android:orientation="vertical"-->
+<!--                android:scrollbars="vertical"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"></LinearLayout>-->
+
 
         </ScrollView>
 

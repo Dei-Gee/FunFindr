@@ -26,7 +26,6 @@ import java.io.InputStream;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private final SQLiteDatabase database = DatabaseHandler.getWritable(this);
 
     private static final int SELECT_PHOTO = 1;
     private static final int CAPTURE_PHOTO = 2;
@@ -35,6 +34,9 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        // Writeable Database
+        final SQLiteDatabase database = DatabaseHandler.getWritable(this);
 
         // VIEWS
         final EditText firstnameInput = (EditText) findViewById(R.id.editTextFirstName);
@@ -51,8 +53,6 @@ public class SignupActivity extends AppCompatActivity {
         {
 
         }
-
-        DatabaseHandler.getWritable(this);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
