@@ -30,6 +30,10 @@ public class Favorite  {
         return id;
     }
 
+    public void setId(String _id) {
+        this.id =  _id;
+    }
+
     public String getUserId() {
         return user_id;
     }

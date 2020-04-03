@@ -308,7 +308,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
                             newFavorite.setSubAdmin(mapFavoriteBundle.getString("sub_admin"));
                             newFavorite.setCountryName(mapFavoriteBundle.getString("country_name"));
 
-                            if(DatabaseHandler.addFavorite(database, newFavorite))
+                            if(DatabaseHandler.addFavorite(database, newFavorite, userId))
                             {
                                 Toast.makeText(getContext(), "Added to Favorites!", Toast.LENGTH_SHORT).show();
                             }
@@ -373,7 +373,7 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         {
 
             Log.d("MAP BUNDLE => ", this.getArguments().getString("full_address"));
-            showFavoriteOnMapFromBundle(this.getArguments());
+            showEventLocationOnMapFromBundle(this.getArguments());
         }
         else
         {
@@ -605,9 +605,9 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
      * This method checks the budle for an address or name and if it finds one, it moves the map
      * there and places a marker. If it doesn't, it moves the camera to the user's current location
      */
-    public void showFavoriteOnMapFromBundle(Bundle favBundle)
+    public void showEventLocationOnMapFromBundle(Bundle eventBundle)
     {
-        String bundleAddress = favBundle.getString("full_address");
+        String bundleAddress = eventBundle.getString("full_address");
 
         if(bundleAddress == null || bundleAddress == "")
         {
@@ -623,6 +623,22 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
                 Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
             }
             Address address = list.get(0);
+
+            String fullAddress = address.getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = address.getLocality();
+            String admin = address.getAdminArea();
+            String subAdmin = address.getSubAdminArea();
+            String country = address.getCountryName();
+            String postalCode = address.getPostalCode();
+            String knownName = address.getFeatureName(); // Only if available else return NULL
+
+            mapFavoriteBundle.putString("address", fullAddress);
+            mapFavoriteBundle.putString("locality", city);
+            mapFavoriteBundle.putString("admin", admin);
+            mapFavoriteBundle.putString("sub_admin", subAdmin);
+            mapFavoriteBundle.putString("postal_code", postalCode);
+            mapFavoriteBundle.putString("country_name", country);
+
             currentMarkerLocation = new LatLng(address.getLatitude(), address.getLongitude());
             markerOptions.position(currentMarkerLocation);
             markerOptions.title(address.getAddressLine(0));

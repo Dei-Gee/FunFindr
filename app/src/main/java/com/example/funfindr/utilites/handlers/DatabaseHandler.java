@@ -255,13 +255,13 @@ public class DatabaseHandler {
      * @param favorite The favorite to be added
      * @return returns a boolean value representing if the Favorite object was added
      */
-    public static boolean addFavorite(SQLiteDatabase database, Favorite favorite)
+    public static boolean addFavorite(SQLiteDatabase database, Favorite favorite, String userId)
     {
         boolean success = false;
 
         HashMap<String,String> insertionMap = new HashMap<>(); // map that will be used to insert a new event into the database
 
-        insertionMap.put("user_id", favorite.getId());
+        insertionMap.put("user_id", userId);
         insertionMap.put("address", favorite.getAddress());
         insertionMap.put("admin", favorite.getAdmin());
         insertionMap.put("sub_admin", favorite.getSubAdmin());
@@ -287,7 +287,7 @@ public class DatabaseHandler {
     {
         String[] returnColumns = new String[]{"_id", "address","postal_code", "locality", "admin", "sub_admin", "country_name"};
 
-        HashMap<String,String> selectionMap = new HashMap<>(); // map that will be used to find the user id
+        HashMap<String,String> selectionMap = new HashMap<>();
         selectionMap.put("user_id", userId);
 
         return DatabaseTableHandler.select(database, true, "favorites", returnColumns, selectionMap, null);

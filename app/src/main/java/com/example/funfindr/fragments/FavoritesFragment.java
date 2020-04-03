@@ -3,6 +3,7 @@ package com.example.funfindr.fragments;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,20 +52,20 @@ public class FavoritesFragment extends Fragment {
         // views
         ListView listViewFavorites = getActivity().findViewById(R.id.listViewFavorites);
 
-//        LinearLayout linearLayout = getActivity().findViewById(R.id.linearLayoutContainerFavorites);
-
 
         Bundle favArgs = getArguments();
         List<Favorite> favoriteList = new ArrayList<Favorite>();
         ArrayList<Map<String,String>> favData;
         favData = DatabaseHandler.selectAllFavorites(database, userId);
+        Favorite newFavorite;
 
         for(Map<String,String> favorite : favData)
         {
-            Favorite newFavorite = new Favorite();
+            newFavorite = new Favorite();
+            newFavorite.setId(favorite.get("_id"));
             newFavorite.setUserId(userId);
             newFavorite.setAddress(favorite.get("address"));
-            newFavorite.setLocality(favorite.get("address"));
+            newFavorite.setLocality(favorite.get("locality"));
             newFavorite.setPostalCode(favorite.get("postal_code"));
             newFavorite.setAdmin(favorite.get("admin"));
             newFavorite.setSubAdmin(favorite.get("sub_admin"));
@@ -72,7 +73,7 @@ public class FavoritesFragment extends Fragment {
             favoriteList.add(newFavorite);
         }
 
-        CustomFavoritesAdapter customFavoritesAdapter = new CustomFavoritesAdapter(getContext(), favoriteList);
+        CustomFavoritesAdapter customFavoritesAdapter = new CustomFavoritesAdapter(getActivity(), favoriteList);
         listViewFavorites.setAdapter(customFavoritesAdapter);
     }
 

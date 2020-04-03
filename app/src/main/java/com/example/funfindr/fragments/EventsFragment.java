@@ -180,7 +180,6 @@ public class EventsFragment extends Fragment {
 
                 // new map fragment
                 GoogleMapFragment gmap = new GoogleMapFragment();
-                Log.d("BUNDLE => ", eventBundle.getString("full_address"));
                 gmap.setArguments(eventBundle);
                 fHandler.loadFragment(gmap, getContext(), fbtn);
             }
