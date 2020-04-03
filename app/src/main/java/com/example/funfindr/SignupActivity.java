@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.funfindr.database.models.User;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 
 import java.io.FileNotFoundException;
@@ -72,24 +73,43 @@ public class SignupActivity extends AppCompatActivity {
                 userLoginDetails[0] = newUser.getEmail();
                 userLoginDetails[1] = newUser.getPassword();
 
-                if(DatabaseHandler.SignupUser(database, newUser))
+                if(newUser.getFirstname() == "" || newUser.getLastname() == "" ||
+                        newUser.getEmail() == "" || newUser.getPassword() == "")
                 {
-                    Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
-                    newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
-                    startActivity(newIntent);
-                    finish();
+                    new CustomToastHandler(SignupActivity.this,
+                            "Please complete the form!").
+                            generateToast(R.color.design_default_color_error, R.color.colorWhite);
+                }
+                else if(newUser.getFirstname() == null || newUser.getLastname() == null ||
+                        newUser.getEmail() == null || newUser.getPassword() == null)
+                {
+                    new CustomToastHandler(SignupActivity.this,
+                            "Please complete the form!").
+                            generateToast(R.color.design_default_color_error, R.color.colorWhite);
                 }
                 else
                 {
-                    if(DatabaseHandler.checkIfUserExists(database, userLoginDetails[0], userLoginDetails[1]) == true)
+                    if(DatabaseHandler.SignupUser(database, newUser))
                     {
-                        Toast.makeText(SignupActivity.this, "Email/Password already taken", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
+                        newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
+                        startActivity(newIntent);
+                        finish();
                     }
                     else
                     {
-                        Toast.makeText(SignupActivity.this, "Error! Signup failed!", Toast.LENGTH_SHORT).show();
+                        if(DatabaseHandler.checkIfUserExists(database, userLoginDetails[0], userLoginDetails[1]) == true)
+                        {
+                            Toast.makeText(SignupActivity.this, "Email/Password already taken", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(SignupActivity.this, "Error! Signup failed!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+
+
 
             }
         });
