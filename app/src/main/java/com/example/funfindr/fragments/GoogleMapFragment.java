@@ -92,7 +92,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
     Bundle mapFavoriteBundle = new Bundle();
 
 
-
     MarkerOptions markerOptions = new MarkerOptions();
     Marker mapMarker;
 
@@ -369,28 +368,38 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                getDeviceLocation();
-            }
-        });
+
+        if(this.getArguments() != null)
+        {
+
+            Log.d("MAP BUNDLE => ", this.getArguments().getString("full_address"));
+            showFavoriteOnMapFromBundle(this.getArguments());
+        }
+        else
+        {
+            task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+                @Override
+                public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                    getDeviceLocation();
+                }
+            });
 
 
 
-        task.addOnFailureListener(getActivity(), new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    ResolvableApiException resolvable = (ResolvableApiException) e;
-                    try {
-                        resolvable.startResolutionForResult(getActivity(), 51);
-                    } catch (IntentSender.SendIntentException e1) {
-                        e1.printStackTrace();
+            task.addOnFailureListener(getActivity(), new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (e instanceof ResolvableApiException) {
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        try {
+                            resolvable.startResolutionForResult(getActivity(), 51);
+                        } catch (IntentSender.SendIntentException e1) {
+                            e1.printStackTrace();
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         gMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
@@ -518,6 +527,11 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
                 Log.d("HERE => ", addresses.get(0).getAddressLine(0));
 
+                if(mapFavoriteBundle == null)
+                {
+                    mapFavoriteBundle = new Bundle();
+                }
+
                 // ADD DATA TO BUNDLE
                 mapFavoriteBundle.putString("address", address);
                 mapFavoriteBundle.putString("locality", city);
@@ -566,6 +580,10 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
             Log.d(TAG, ("geoLocate: found a location: ").toUpperCase() + address.toString());
             //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
+            if(mapFavoriteBundle == null)
+            {
+                mapFavoriteBundle = new Bundle();
+            }
             // ADD DATA TO BUNDLE
             mapFavoriteBundle.putString("address", fullAddress);
             mapFavoriteBundle.putString("locality", city);
@@ -583,4 +601,34 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         }
     }
 
+    /**
+     * This method checks the budle for an address or name and if it finds one, it moves the map
+     * there and places a marker. If it doesn't, it moves the camera to the user's current location
+     */
+    public void showFavoriteOnMapFromBundle(Bundle favBundle)
+    {
+        String bundleAddress = favBundle.getString("full_address");
+
+        if(bundleAddress == null || bundleAddress == "")
+        {
+            getDeviceLocation();
+        }
+        else
+        {
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> list = new ArrayList<Address>();
+            try{
+                list = geocoder.getFromLocationName(bundleAddress, 1);
+            }catch (IOException e){
+                Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+            }
+            Address address = list.get(0);
+            currentMarkerLocation = new LatLng(address.getLatitude(), address.getLongitude());
+            markerOptions.position(currentMarkerLocation);
+            markerOptions.title(address.getAddressLine(0));
+            gMap.clear();
+            gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarkerLocation, DEFAULT_ZOOM));
+            gMap.addMarker(markerOptions);
+        }
+    }
 }

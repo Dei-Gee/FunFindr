@@ -34,6 +34,9 @@ public class EventsFragment extends Fragment {
 
     private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
 
+    // Bundle
+    Bundle eventBundle = new Bundle();
+
     @Nullable
     @Override
     public android.view.View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,8 +48,11 @@ public class EventsFragment extends Fragment {
         // Shared Preferences
         SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getContext());
         String userId = SharedPreferencesManager.getString(sharedPreferences, "_id");
+
+        // database
         SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
 
+        // retrieving all events
         ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (database,userId);
 
         LinearLayout cardsContainer = getActivity().findViewById(R.id.cardsContainer);
@@ -62,6 +68,7 @@ public class EventsFragment extends Fragment {
         FragmentManager frag = getActivity().getSupportFragmentManager(); // initializes new Support Fragment Manager
         final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
         fragHandler.setFloatingActionButtonDrawable(fab, fragHandler.getCurrentFragment(), getContext());
+
 
         // FLOATING ACTION BUTTON CLICK LISTENER
         fab.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +97,9 @@ public class EventsFragment extends Fragment {
             Button showEventOnMapButton = card.findViewById(R.id.buttonEventShowOnMap);
             ImageView imageViewDeleteEvent = card.findViewById(R.id.imageViewDeleteButton);
             ImageView imageViewEditEvent = card.findViewById(R.id.imageViewEditButton);
+
+            final String eventAddress = event.get("address");
+            showEventOnMap(showEventOnMapButton, fragHandler, fab, eventAddress);
 
             // formatting date and time
             String[] formattedDateTime = event.get("date").split(" ");
@@ -150,6 +160,29 @@ public class EventsFragment extends Fragment {
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                 }
 
+            }
+        });
+    }
+
+    /**
+     * Shows the event on the map
+     * @param button The show event button
+     * @param fHandler The fragment handler
+     * @param fbtn the floating action button
+     * @param eventAddress The event address
+     */
+    public void showEventOnMap (final Button button, final FragmentHandler fHandler, final FloatingActionButton fbtn, final String eventAddress)
+    {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventBundle.putString("full_address", eventAddress);
+
+                // new map fragment
+                GoogleMapFragment gmap = new GoogleMapFragment();
+                Log.d("BUNDLE => ", eventBundle.getString("full_address"));
+                gmap.setArguments(eventBundle);
+                fHandler.loadFragment(gmap, getContext(), fbtn);
             }
         });
     }
