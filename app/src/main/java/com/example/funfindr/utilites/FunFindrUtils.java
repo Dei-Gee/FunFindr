@@ -14,7 +14,8 @@ public class FunFindrUtils {
      * @param s The string to be checked
      * @return whether the string is numeric or not
      */
-    public static boolean isInteger(String s) {
+    public static boolean isInteger(String s)
+    {
         return isInteger(s,10);
     }
 
@@ -24,7 +25,8 @@ public class FunFindrUtils {
      * @param radix The base of the number i.e. Binary, Hexadecimal, Decimal/Denary etc.
      * @return whether the string is numeric or not
      */
-    public static boolean isInteger(String s, int radix) {
+    public static boolean isInteger(String s, int radix)
+    {
         if(s.isEmpty()) return false;
         for(int i = 0; i < s.length(); i++) {
             if(i == 0 && s.charAt(i) == '-') {
@@ -70,6 +72,5 @@ public class FunFindrUtils {
     public static Bitmap getImage(byte[] byteArray) {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
-
 
 }

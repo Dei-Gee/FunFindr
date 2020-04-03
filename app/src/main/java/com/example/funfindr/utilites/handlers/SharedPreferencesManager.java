@@ -1,15 +1,14 @@
-package com.example.funfindr.utilites;
+package com.example.funfindr.utilites.handlers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.example.funfindr.LoginActivity;
 import com.example.funfindr.MainUIActivity;
+import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public class SharedPreferencesManager {
 
     /**
      * Creates and new SharedPreferences instance or calls an existing one
-     * @param name
+     * @param name The name of the shared preferences object
      * @return returns SharedPreferencs object
      */
     public static SharedPreferences newPreferences(String name, Context context)
@@ -30,9 +29,9 @@ public class SharedPreferencesManager {
     /**
      * Edits the values in the shared preferences
      * @param context The context of the Activity or Fragment calling this method
-     * @param type The type of data to be passed
+     * @param type The type of database to be passed
      * @param prefs The SharedPreferences Object
-     * @param data The data to be passed
+     * @param data The database to be passed
      */
     public static void editPreferences(Context context, String type, SharedPreferences prefs, HashMap<String,String> data)
     {
@@ -46,17 +45,18 @@ public class SharedPreferencesManager {
                     editor.putString(entry.getKey(), entry.getValue());
                 }
                 editor.commit();
-            break;
+                break;
             case "integer":
                 for(Map.Entry<String,String> entry : data.entrySet())
                 {
                     editor.putInt(entry.getKey(), Integer.parseInt(entry.getValue()));
                 }
                 editor.commit();
-            break;
+                break;
             default:
                 Log.d("ERROR! => ", "SOMETHING WENT WRONG");
         }
+        editor.commit();
 
     }
 
@@ -88,9 +88,9 @@ public class SharedPreferencesManager {
     }
 
     /**
-     * Returns a string value of the SharedPreferences data based on a its key
+     * Returns a string value of the SharedPreferences database based on a its key
      * @param prefs The SharedPreferences Object
-     * @param key The key used to find the data
+     * @param key The key used to find the database
      * @return returns the value of the key passed
      */
     public static String getString (SharedPreferences prefs, String key)
@@ -109,8 +109,12 @@ public class SharedPreferencesManager {
         {
             if(prefs.getBoolean("userLoggedIn", false))
             {
-                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
+                new CustomToastHandler(context,
+                        "Logging in...").generateToast(context.getResources().getColor(R.color.colorOrange), context.getResources().getColor(R.color.colorWhite));
+
+                new CustomToastHandler(context,
+                        "Login Successful!").generateToast(context.getResources().getColor(R.color.quantum_googgreenA700), context.getResources().getColor(R.color.colorWhite));
+
                 context.startActivity(new Intent(context, MainUIActivity.class));
             }
         }

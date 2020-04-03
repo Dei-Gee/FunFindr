@@ -3,16 +3,15 @@ package com.example.funfindr;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.funfindr.fragments.EventsFormFragment;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -145,15 +144,19 @@ public class MainUIActivity extends AppCompatActivity
             f.loadFragment(new FavoritesFragment(), MainUIActivity.this, fb);
         } else if (id == R.id.nav_events) {
             f.loadFragment(new EventsFragment(), MainUIActivity.this, fb);
-        } else if (id == R.id.nav_information) {
-
-        } else if (id == R.id.nav_settings) {
+        }  else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_logout) {
             SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
             DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
-            Toast.makeText(MainUIActivity.this, "You have been logged out!", Toast.LENGTH_SHORT).show();
+            new CustomToastHandler(MainUIActivity.this,
+                    "You have been logged out").generateToast(getResources().getColor(R.color.colorFunFindrBlueLight), getResources().getColor(R.color.colorWhite));
+
             finish();
+        }
+        else if (id == R.id.nav_exit)
+        {
+            System.exit(0);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -18,14 +18,14 @@
             android:title="@string/menu_events" />
     </group>
 
-    <item android:title="@string/menu_title_tools">
-        <menu>
-            <item
-                android:id="@+id/nav_information"
-                android:icon="@drawable/ic_menu_info_outline_black_24dp"
-                android:title="@string/menu_information" />
-        </menu>
-    </item>
+<!--    <item android:title="@string/menu_title_tools">-->
+<!--        <menu>-->
+<!--            <item-->
+<!--                android:id="@+id/nav_information"-->
+<!--                android:icon="@drawable/ic_menu_info_outline_black_24dp"-->
+<!--                android:title="@string/menu_information" />-->
+<!--        </menu>-->
+<!--    </item>-->
 
     <item android:title="@string/menu_title_account">
         <menu>
@@ -37,6 +37,15 @@
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_exit_to_app_black_24dp"
                 android:title="@string/menu_logout" />
+        </menu>
+    </item>
+
+    <item android:title="@string/menu_title_tools">
+        <menu>
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_subdirectory_arrow_exit_24dp"
+                android:title="@string/menu_exit" />
         </menu>
     </item>
 

@@ -1,4 +1,4 @@
-package com.example.funfindr.data;
+package com.example.funfindr.database.models;
 
 import android.graphics.Bitmap;
 

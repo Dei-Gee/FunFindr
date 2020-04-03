@@ -1,9 +1,9 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +22,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
-import com.example.funfindr.data.Event;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.SignupActivity;
+import com.example.funfindr.database.models.Event;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.ParseException;
@@ -35,6 +38,9 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class EventsEditFormFragment extends Fragment {
+
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,6 +122,7 @@ public class EventsEditFormFragment extends Fragment {
 
         String time = "";
 
+        // Chekcs the value of the time of event
         if(timeOfEvent == null || timeOfEvent.size() == 0)
         {
             time = " " + eTimeHour + ":"+ eTimeMinute +":"+"00.000";
@@ -134,6 +141,8 @@ public class EventsEditFormFragment extends Fragment {
 
                 newEvent.setTitle(eventTitle.getText().toString());
                 newEvent.setAddress(eventAddress.getText().toString());
+
+                // Checks the value of the event's date
                 if(dateOfEvent == null || dateOfEvent.size() == 0)
                 {
                     newEvent.setDate(formattedDateTime[0] + finalTime);
@@ -141,12 +150,13 @@ public class EventsEditFormFragment extends Fragment {
                 else{
                     newEvent.setDate(dateOfEvent.get(0) + finalTime);
                 }
+
                 newEvent.setLocation(eventLocation.getText().toString());
                 newEvent.setNotes(eventNotes.getText().toString());
                 newEvent.setType(typeOfEvent.get(0));
 
 
-                // data to passed in the update method
+                // database to passed in the update method
                 HashMap<String,String> data = new HashMap<>();
 
                 data.put("title", newEvent.getTitle());
@@ -156,21 +166,31 @@ public class EventsEditFormFragment extends Fragment {
                 data.put("notes", newEvent.getNotes());
                 data.put("address", newEvent.getAddress());
 
-                String userId = DatabaseHandler.getUserId(SharedPreferencesManager.getString(sharedPreferences, "email"));
+                String userId = DatabaseHandler.getUserId(database, SharedPreferencesManager.getString(sharedPreferences, "email"));
 
-                if(DatabaseHandler.updateEvent(evId, data))
+                // Checks if the event is successfully updated or not
+                if(DatabaseHandler.updateEvent(database, evId, data))
                 {
-                    Toast.makeText(getActivity(), "Event has been updated!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Event has been updated").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Failed to update event!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Failed to update event!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                 }
             }
         });
     }
 
+    /**
+     * Gets the date of the event through the CalendarView's OnDateChangeLIstener() method
+     * @param calendarView The CalendarView
+     * @return returns and ArrayList with the values of the date
+     */
     public ArrayList<String> getDateOfEvent(CalendarView calendarView)
     {
         final ArrayList<String> edate = new ArrayList<String>();
@@ -194,6 +214,11 @@ public class EventsEditFormFragment extends Fragment {
         return edate;
     }
 
+    /**
+     * Gets the type of event through the Spinner's OnItemSelectedListener() method
+     * @param spinner The Spinner
+     * @return returns and ArrayList with the values of the type
+     */
     public ArrayList<String> getTypeOfEvent(Spinner spinner)
     {
         final ArrayList<String> eType = new ArrayList<String>();
@@ -212,6 +237,11 @@ public class EventsEditFormFragment extends Fragment {
         return eType;
     }
 
+    /**
+     * Gets the time of the event through the TimePicker's OnTimeChangedListener() method
+     * @param timePicker The TimePicker
+     * @return returns and ArrayList with the values of the time
+     */
     public ArrayList<String> getTimeOfEvent(TimePicker timePicker)
     {
         final ArrayList<String> eTime = new ArrayList<String>();

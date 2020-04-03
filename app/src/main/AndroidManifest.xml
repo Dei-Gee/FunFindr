@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.funfindr">
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -43,9 +43,6 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/GOOGLE_API_KEY" />
     </application>
 
 </manifest>

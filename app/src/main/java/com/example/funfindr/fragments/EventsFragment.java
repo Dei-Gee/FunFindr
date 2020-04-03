@@ -1,13 +1,13 @@
 package com.example.funfindr.fragments;
 
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,18 +21,23 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.funfindr.R;
-import com.example.funfindr.utilites.DatabaseHandler;
-import com.example.funfindr.utilites.FragmentHandler;
-import com.example.funfindr.utilites.SharedPreferencesManager;
+import com.example.funfindr.SignupActivity;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
+import com.example.funfindr.utilites.handlers.DatabaseHandler;
+import com.example.funfindr.utilites.handlers.FragmentHandler;
+import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 public class EventsFragment extends Fragment {
 
+    private final SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
+
+    // Bundle
+    Bundle eventBundle = new Bundle();
 
     @Nullable
     @Override
@@ -44,13 +49,15 @@ public class EventsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Shared Preferences
         SharedPreferences sharedPreferences = SharedPreferencesManager.newPreferences("MyPrefs", getContext());
-        String email = SharedPreferencesManager.getString(sharedPreferences, "email");
-        Log.d("tsdtsdg", email);
-        String userId = DatabaseHandler.getUserId(email);
+        String userId = SharedPreferencesManager.getString(sharedPreferences, "_id");
 
-        ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (userId);
+        // database
+        SQLiteDatabase database = DatabaseHandler.getWritable(getActivity());
 
-        LinearLayout cardsContainer = (LinearLayout) getActivity().findViewById(R.id.cardsContainer);
+        // retrieving all events
+        ArrayList<Map<String,String>> allEvents = DatabaseHandler.selectAllEvents (database,userId);
+
+        LinearLayout cardsContainer = getActivity().findViewById(R.id.cardsContainer);
 
         Collections.reverse(allEvents);
 
@@ -63,6 +70,7 @@ public class EventsFragment extends Fragment {
         FragmentManager frag = getActivity().getSupportFragmentManager(); // initializes new Support Fragment Manager
         final FragmentHandler fragHandler = new FragmentHandler(frag); // handles the fragment manager
         fragHandler.setFloatingActionButtonDrawable(fab, fragHandler.getCurrentFragment(), getContext());
+
 
         // FLOATING ACTION BUTTON CLICK LISTENER
         fab.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +99,9 @@ public class EventsFragment extends Fragment {
             Button showEventOnMapButton = card.findViewById(R.id.buttonEventShowOnMap);
             ImageView imageViewDeleteEvent = card.findViewById(R.id.imageViewDeleteButton);
             ImageView imageViewEditEvent = card.findViewById(R.id.imageViewEditButton);
+
+            final String eventAddress = event.get("address");
+            showEventOnMap(showEventOnMapButton, fragHandler, fab, eventAddress);
 
             // formatting date and time
             String[] formattedDateTime = event.get("date").split(" ");
@@ -145,12 +156,36 @@ public class EventsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FloatingActionButton fab = getActivity().findViewById(R.id.fab);
-                if(DatabaseHandler.deleteEvent(id))
+                if(DatabaseHandler.deleteEvent(database, id))
                 {
-                    Toast.makeText(getActivity(), "Event deleted!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Event Deleted!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                 }
 
+            }
+        });
+    }
+
+    /**
+     * Shows the event on the map
+     * @param button The show event button
+     * @param fHandler The fragment handler
+     * @param fbtn the floating action button
+     * @param eventAddress The event address
+     */
+    public void showEventOnMap (final Button button, final FragmentHandler fHandler, final FloatingActionButton fbtn, final String eventAddress)
+    {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventBundle.putString("full_address", eventAddress);
+
+                // new map fragment
+                GoogleMapFragment gmap = new GoogleMapFragment();
+                gmap.setArguments(eventBundle);
+                fHandler.loadFragment(gmap, getContext(), fbtn);
             }
         });
     }
