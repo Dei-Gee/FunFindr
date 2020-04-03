@@ -31,7 +31,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
 import com.example.funfindr.database.models.Favorite;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 import com.google.android.gms.common.api.ApiException;
@@ -310,11 +312,15 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
                             if(DatabaseHandler.addFavorite(database, newFavorite, userId))
                             {
-                                Toast.makeText(getContext(), "Added to Favorites!", Toast.LENGTH_SHORT).show();
+                                new CustomToastHandler(getContext(),
+                                        "Added to Favorites").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
                             }
                             else
                             {
-                                Toast.makeText(getContext(), "Failed to add to favorites!", Toast.LENGTH_SHORT).show();
+                                new CustomToastHandler(getContext(),
+                                        "Failed to add to Favorites!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                             }
                         }
                         gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentMarkerLocation, DEFAULT_ZOOM));
@@ -481,7 +487,9 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
 
                             }
                         } else {
-                            Toast.makeText(getActivity(), "unable to get last location", Toast.LENGTH_SHORT).show();
+                            new CustomToastHandler(getContext(),
+                                    "Unable to get last location!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                         }
                     }
                 });
@@ -589,7 +597,6 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
             String knownName = address.getFeatureName(); // Only if available else return NULL
 
             Log.d(TAG, ("geoLocate: found a location: ").toUpperCase() + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
             if(mapFavoriteBundle == null)
             {

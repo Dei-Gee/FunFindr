@@ -22,7 +22,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
 import com.example.funfindr.database.models.Event;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
@@ -169,12 +171,16 @@ public class EventsEditFormFragment extends Fragment {
                 // Checks if the event is successfully updated or not
                 if(DatabaseHandler.updateEvent(database, evId, data))
                 {
-                    Toast.makeText(getActivity(), "Event has been updated!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Event has been updated").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                 }
                 else
                 {
-                    Toast.makeText(getActivity(), "Failed to update event!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Failed to update event!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                 }
             }
         });

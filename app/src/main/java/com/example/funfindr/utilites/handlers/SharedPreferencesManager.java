@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 import com.example.funfindr.MainUIActivity;
+import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,8 +109,12 @@ public class SharedPreferencesManager {
         {
             if(prefs.getBoolean("userLoggedIn", false))
             {
-                Toast.makeText(context, "Logging in...", Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show();
+                new CustomToastHandler(context,
+                        "Logging in...").generateToast(context.getResources().getColor(R.color.colorOrange), context.getResources().getColor(R.color.colorWhite));
+
+                new CustomToastHandler(context,
+                        "Login Successful!").generateToast(context.getResources().getColor(R.color.quantum_googgreenA700), context.getResources().getColor(R.color.colorWhite));
+
                 context.startActivity(new Intent(context, MainUIActivity.class));
             }
         }

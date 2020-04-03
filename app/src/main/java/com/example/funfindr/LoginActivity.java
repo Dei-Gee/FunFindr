@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
 
@@ -108,7 +109,9 @@ public class LoginActivity extends AppCompatActivity {
                 if(userData != null)
                 {
                     Log.d("USER DATA", userData.toString());
-                    Toast.makeText(LoginActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(LoginActivity.this,
+                            "Login Successful").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
 
                     /* Passing User Data into the SharedPrefences to manage the session */
                     HashMap<String,String> data = new HashMap<String,String>();
@@ -131,7 +134,9 @@ public class LoginActivity extends AppCompatActivity {
                     if(!DatabaseHandler.checkIfUserExists(db, formLoginDetails[0], formLoginDetails[1]))
                     {
                         SharedPreferencesManager.editPreferencesBoolean(LoginActivity.this, sharedPreferences, "userLoggedIn", false);
-                        Toast.makeText(LoginActivity.this, "Sorry! Login Failed!", Toast.LENGTH_SHORT).show();
+                        new CustomToastHandler(LoginActivity.this,
+                                "Sorry! Login Failed!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                     }
                 }
 

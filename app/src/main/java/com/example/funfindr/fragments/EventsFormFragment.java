@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
 import com.example.funfindr.database.models.Event;
 import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
@@ -121,31 +122,34 @@ public class EventsFormFragment extends Fragment {
                 newEvent.setNotes(eventNotes.getText().toString());
                 newEvent.setType(typeOfEvent.get(0));
 
-                Log.d("EMAIL => ", SharedPreferencesManager.getString(sharedPreferences, "email"));
-
                 // make sure input is not empty
                 if(newEvent.getAddress().length() == 0 || newEvent.getDate().length() == 0 || newEvent.getLocation().length() == 0 ||
                 newEvent.getTitle().length() == 0 || newEvent.getType().length() == 0)
                 {
-                    Toast.makeText(getActivity(), "Please complete the form!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Please complete the form!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                 }
                 else if(newEvent.getAddress() == null || newEvent.getDate() == null || newEvent.getLocation() == null ||
                         newEvent.getTitle() == null || newEvent.getType() == null)
                 {
                     new CustomToastHandler(getContext(),
                             "Please complete the form!").
-                            generateToast(R.color.design_default_color_error, R.color.colorWhite);
+                            generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
                 }
                 else
                 {
                     if(DatabaseHandler.createEvent(database, newEvent, SharedPreferencesManager.getString(sharedPreferences, "email")))
                     {
-                        Toast.makeText(getActivity(), "New Event Created!", Toast.LENGTH_SHORT).show();
+                        new CustomToastHandler(getContext(),
+                                "New Event Created!").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
                         new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                     }
                     else
                     {
-                        Toast.makeText(getActivity(), "Failed to create event!", Toast.LENGTH_SHORT).show();
+                        new CustomToastHandler(getContext(),
+                                "Failed to create event!").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
                     }
                 }
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.example.funfindr.fragments.FavoritesFragment;
 import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.fragments.EventsFragment;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
 import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
@@ -148,7 +149,9 @@ public class MainUIActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             SharedPreferences sharedPrefs = SharedPreferencesManager.newPreferences("MyPrefs", MainUIActivity.this);
             DatabaseHandler.LogoutUser(sharedPrefs, MainUIActivity.this);
-            Toast.makeText(MainUIActivity.this, "You have been logged out!", Toast.LENGTH_SHORT).show();
+            new CustomToastHandler(MainUIActivity.this,
+                    "You have been logged out").generateToast(getResources().getColor(R.color.colorFunFindrBlueLight), getResources().getColor(R.color.colorWhite));
+
             finish();
         }
         else if (id == R.id.nav_exit)

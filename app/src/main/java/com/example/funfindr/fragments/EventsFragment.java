@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
 import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
@@ -156,7 +158,9 @@ public class EventsFragment extends Fragment {
                 FloatingActionButton fab = getActivity().findViewById(R.id.fab);
                 if(DatabaseHandler.deleteEvent(database, id))
                 {
-                    Toast.makeText(getActivity(), "Event deleted!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Event Deleted!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new EventsFragment(), getActivity(), fab);
                 }
 

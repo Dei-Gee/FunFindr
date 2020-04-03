@@ -20,8 +20,10 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.funfindr.R;
+import com.example.funfindr.SignupActivity;
 import com.example.funfindr.database.models.Favorite;
 import com.example.funfindr.utilites.adapters.CustomFavoritesAdapter;
+import com.example.funfindr.utilites.handlers.CustomToastHandler;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
 import com.example.funfindr.utilites.handlers.SharedPreferencesManager;
@@ -90,7 +92,9 @@ public class FavoritesFragment extends Fragment {
                 FloatingActionButton fab = getActivity().findViewById(R.id.fab);
                 if(DatabaseHandler.deleteFavorite(database, id))
                 {
-                    Toast.makeText(getActivity(), "Favorite deleted!", Toast.LENGTH_SHORT).show();
+                    new CustomToastHandler(getContext(),
+                            "Favorite Deleted").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
+
                     new FragmentHandler(getActivity().getSupportFragmentManager()).loadFragment(new FavoritesFragment(), getActivity(), fab);
                 }
 

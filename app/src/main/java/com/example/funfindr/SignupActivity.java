@@ -78,20 +78,28 @@ public class SignupActivity extends AppCompatActivity {
                 {
                     new CustomToastHandler(SignupActivity.this,
                             "Please complete the form!").
-                            generateToast(R.color.design_default_color_error, R.color.colorWhite);
+                            generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
                 }
                 else if(newUser.getFirstname() == null || newUser.getLastname() == null ||
                         newUser.getEmail() == null || newUser.getPassword() == null)
                 {
                     new CustomToastHandler(SignupActivity.this,
                             "Please complete the form!").
-                            generateToast(R.color.design_default_color_error, R.color.colorWhite);
+                            generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
+                }
+                else if(newUser.getFirstname().length() == 0 || newUser.getLastname().length() == 0 ||
+                        newUser.getEmail().length() == 0 || newUser.getPassword().length() == 0)
+                {
+                    new CustomToastHandler(SignupActivity.this,
+                            "Please complete the form!").
+                            generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
                 }
                 else
                 {
                     if(DatabaseHandler.SignupUser(database, newUser))
                     {
-                        Toast.makeText(SignupActivity.this, "You have been signed up", Toast.LENGTH_SHORT).show();
+                        new CustomToastHandler(SignupActivity.this,
+                                "You have been signed up!").generateToast(getResources().getColor(R.color.quantum_googgreenA700), getResources().getColor(R.color.colorWhite));
                         newIntent = new Intent(SignupActivity.this, LoginActivity.class).putExtra("user", userLoginDetails);
                         startActivity(newIntent);
                         finish();
@@ -100,11 +108,13 @@ public class SignupActivity extends AppCompatActivity {
                     {
                         if(DatabaseHandler.checkIfUserExists(database, userLoginDetails[0], userLoginDetails[1]) == true)
                         {
-                            Toast.makeText(SignupActivity.this, "Email/Password already taken", Toast.LENGTH_SHORT).show();
+                            new CustomToastHandler(SignupActivity.this,
+                                    "Email/Password already Taken").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
                         }
                         else
                         {
-                            Toast.makeText(SignupActivity.this, "Error! Signup failed!", Toast.LENGTH_SHORT).show();
+                            new CustomToastHandler(SignupActivity.this,
+                                    "Error! Signup failed!").generateToast(getResources().getColor(R.color.design_default_color_error), getResources().getColor(R.color.colorWhite));
                         }
                     }
                 }
