@@ -368,12 +368,23 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
         SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
         Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
 
-
+        // Check if this fragment has any bundle arguments from other fragments
         if(this.getArguments() != null)
         {
+            Bundle subBundle = this.getArguments();
 
-            Log.d("MAP BUNDLE => ", this.getArguments().getString("full_address"));
-            showEventLocationOnMapFromBundle(this.getArguments());
+            String eventAddress = subBundle.getString("full_address");
+            String favoritesAddress = subBundle.getString("favorites_full_address");
+
+            if((eventAddress == "" && favoritesAddress!="") || (eventAddress == null && favoritesAddress != null))
+            {
+                showEventLocationOnMapFromBundle(favoritesAddress);
+            }
+            else if ((eventAddress != "" && favoritesAddress == "") || (eventAddress != null && favoritesAddress == null))
+            {
+                showEventLocationOnMapFromBundle(eventAddress);
+            }
+
         }
         else
         {
@@ -605,9 +616,9 @@ public class GoogleMapFragment extends Fragment implements GoogleMap.OnMarkerCli
      * This method checks the budle for an address or name and if it finds one, it moves the map
      * there and places a marker. If it doesn't, it moves the camera to the user's current location
      */
-    public void showEventLocationOnMapFromBundle(Bundle eventBundle)
+    public void showEventLocationOnMapFromBundle(String addressFromEventOrFavorites)
     {
-        String bundleAddress = eventBundle.getString("full_address");
+        String bundleAddress = addressFromEventOrFavorites;
 
         if(bundleAddress == null || bundleAddress == "")
         {

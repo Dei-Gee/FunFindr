@@ -3,6 +3,7 @@ package com.example.funfindr.utilites.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.example.funfindr.MainUIActivity;
 import com.example.funfindr.R;
 import com.example.funfindr.database.models.Favorite;
 import com.example.funfindr.fragments.FavoritesFragment;
+import com.example.funfindr.fragments.GoogleMapFragment;
 import com.example.funfindr.utilites.handlers.DatabaseHandler;
 import com.example.funfindr.utilites.handlers.FragmentHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +35,8 @@ public class CustomFavoritesAdapter extends ArrayAdapter<Favorite> {
     private Context context;
     private List<Favorite> favoritesList;
     private int layout = R.layout.cards_layout_favorites;
+    // Bundle
+    private Bundle favoritesBundle = new Bundle();
 
     public CustomFavoritesAdapter(Context _context, List<Favorite> favorites) {
         super(_context, R.layout.cards_layout_favorites, favorites);
@@ -58,6 +62,8 @@ public class CustomFavoritesAdapter extends ArrayAdapter<Favorite> {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        final MainUIActivity conAct = (MainUIActivity) context;
+        final FloatingActionButton fab = conAct.findViewById(R.id.fab);
 
         CardView v = (CardView) LayoutInflater.from(this.context).inflate(this.layout, null, false);
 
@@ -65,6 +71,7 @@ public class CustomFavoritesAdapter extends ArrayAdapter<Favorite> {
         TextView fullAddress;
         TextView adminSubAdmin;
         Button buttonShowOnMap;
+        ImageView imageView;
 
         postalCode = v.findViewById(R.id.textViewPlaceName);
         fullAddress = v.findViewById(R.id.textViewPlaceAddress);
@@ -75,16 +82,20 @@ public class CustomFavoritesAdapter extends ArrayAdapter<Favorite> {
         fullAddress.setText(favoritesList.get(i).getAddress());
         adminSubAdmin.setText(favoritesList.get(i).getAdmin() + ", " + favoritesList.get(i).getSubAdmin());
 
-        ImageView imageView = v.findViewById(R.id.imageViewDeleteButtonFavorites);
+        imageView = v.findViewById(R.id.imageViewDeleteButtonFavorites);
         final String id = favoritesList.get(i).getId();
 
+        /**
+         * Deletes favorite and refreshes the fragment
+         * @param imageView The icon that serves as the delete button
+         * @param id The favorite's id
+         */
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("CLICK => ", ""+id);
-                MainUIActivity conAct = (MainUIActivity) context;
+
                 SQLiteDatabase database = DatabaseHandler.getWritable(context);
-                FloatingActionButton fab = conAct.findViewById(R.id.fab);
                 if(DatabaseHandler.deleteFavorite(database, id))
                 {
                     Toast.makeText(context, "Favorite deleted!", Toast.LENGTH_SHORT).show();
@@ -94,17 +105,36 @@ public class CustomFavoritesAdapter extends ArrayAdapter<Favorite> {
             }
         });
 
+
+
+        buttonShowOnMap = v.findViewById(R.id.buttonShowOnMapFavorites);
+        final String favoritesAddress = favoritesList.get(i).getAddress();
+        /**
+         * Shows the event on the map
+         * @param button The show event button
+         * @param fHandler The fragment handler
+         * @param fbtn the floating action button
+         * @param eventAddress The event address
+         */
+        buttonShowOnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favoritesBundle.putString("favorites_full_address", favoritesAddress);
+
+                // new map fragment
+                GoogleMapFragment gmap = new GoogleMapFragment();
+                gmap.setArguments(favoritesBundle);
+                new FragmentHandler(conAct.getSupportFragmentManager()).loadFragment(gmap, context, fab);
+            }
+        });
+
         // set the tag to the id
         v.setTag(favoritesList.get(i).getId());
         v.invalidate();
         return v;
     }
 
-    /**
-     * Deletes favorite and refreshes the fragment
-     * @param imageView The icon that serves as the delete button
-     * @param id The favorite's id
-     */
+
 
 
 }
